@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<link type="text/css" rel="stylesheet" media="screen" href="http://www.rainleads.com/2.0/css/style.css" />
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,500,700,400italic' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://www.rainleads.com/2.0/jquery.fancybox.js"></script>
+    <link type="text/css" rel="stylesheet" media="screen" href="http://www.rainleads.com/2.0/jquery.fancybox.css" />
+    
+    <title>RainLeads - Dead Simple Lead Management. Srsly</title>
+    <script>		
+		$(document).ready(function() {
+			$(".fancybox").fancybox();
+		});
+	</script>    
+</head><body>
+<div id="header">
+	<div class="inner">
+    	<img class="left" src="img/logo.png" />
+        <div class="left" id="client_name">
+        	Pearse Street Consulting, Inc.
+        </div>
+        <div class="right" id="nav"><a href="./account">MY ACCOUNT</a> | <a href="./help">HELP</a> | <a href="logout.php">LOGOUT</a></div>
+        <div id="search">
+        	<input type="text" onFocus="if($(this).val()=='Search for Leads or Contacts...'){$(this).val('')}" onBlur="if($(this).val()==''){$(this).val('Search for Leads or Contacts...')}" value="Search for Leads or Contacts..." />            
+        </div>
+    <div class="clear"></div>
+    </div>
+</div><div id="content" class="inner">
+	<div id="side" class="left">
+    	<div class="link" data-file="dashboard.php" onclick="document.location.href='./'">
+    <div class="icon left">
+        <img src="img/dash-icon.png" id="dash-icon" />
+    </div>
+    <div class="title left">
+        Dashboard
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="link" data-file="leads.php" onclick="document.location.href='leads.php'">
+    <div class="icon left">
+        <img src="img/lead-icon.png" id="lead-icon" />
+    </div>
+    <div class="title left">
+        Leads
+    </div>             
+    <div class="clear"></div>
+</div>
+<div class="link" data-file="contacts.php" onclick="document.location.href='contacts.php'">
+    <div class="icon left">
+        <img src="img/team-icon.png" id="team-icon" />
+    </div>
+    <div class="title left">
+        Contacts
+    </div>             
+    <div class="clear"></div>
+</div>
+<div class="link" data-file="forms.php" onclick="document.location.href='forms.php'">
+    <div class="icon left">
+        <img src="img/forms-icon.png" id="forms-icon" />
+    </div>
+    <div class="title left">
+        Contact Forms
+    </div>             
+    <div class="clear"></div>
+</div>
+<div class="link" data-file="stats.php" onclick="document.location.href='stats.php'">
+    <div class="icon left">
+        <img src="img/stats-icon.png" id="stats-icon" />
+    </div>
+    <div class="title left">
+        Statistics
+    </div>             
+    <div class="clear"></div>
+</div>               
+<div class="link" data-file="settings.php" onclick="document.location.href='settings.php'">
+    <div class="icon left">
+        <img src="img/settings-icon.png" id="settings-icon" />
+    </div>
+    <div class="title left">
+        Admin Settings
+    </div>
+    <div class="clear"></div>
+</div>
+<script>
+//Script to set current page class
+$(function() {
+  var current_path = window.location.pathname.split('/').pop();
+  
+  if(current_path ==''){current_path='dashboard.php';}
+  //alert(current_path);
+  $('*[data-file="'+current_path+'"]').addClass('current');
+  
+  //Setup Mouseover Funtions for the Navigation
+	$("#side").children(".link").each(function(){
+		if($(this).is('*[data-file="'+current_path+'"]')){
+				id=$(this).find('.icon img').attr('id');
+				$(this).find(".icon img").attr({"src" :"./img/"+ id + "-on.png "});
+			}else{
+			 $(this).mouseover(function() {
+				id=$(this).find('.icon img').attr('id');
+				$(this).find(".icon img").attr({"src" :"./img/"+ id + "-on.png "});
+			});
+			$(this).mouseout(function () {
+				id=$(this).find('.icon img').attr('id');
+				$(this).find(".icon img").attr({"src" :"./img/"+ id + ".png "});
+			});
+		}
+	});
+});
+
+</script>    </div>
+    <div id="main" class="left">
+        <div id="contact_forms">
+            <h1>Create Contact Form</h1>
+            <div class="clear"></div>
+            <br/>
+            <h2>Step 1. Customize Your Form's Fields</h2>
+            <span class="subtitle">Click on any form field to edit it's label. To add a field, select field type and hit Add.</span>
+            <br/>
+            <div class="box">
+            <ul id="form_fields">
+            	<!-- Full Name Field -->
+            	<li class="form_field" id="1">
+                	<div class="edit_field">
+                    	<div class="left">
+	                    	<input type="text" value="Full Name" class="edit" onChange="labelText(1,$(this).val())">
+                            <input type="number" style="width:46px;" value="280" class="edit" onChange="textWidth(1,$(this).val())" /><span class="edit_label">Width</span>
+                            <br/>
+                            <input type="text" data-fieldID="1" value="" disabled="disabled" class="preview">
+                        </div>
+                        <div class="right">
+                        	
+                            <span class="required">Field is required</span><input type="checkbox" checked="checked" disabled="disabled"><br/>
+                            <span class="red">Delete Field</span><img src="img/field-delete-icon.png" class="delete-field" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="preview_field" style="display:none;">
+                    	<div class="left">
+                        	<div class="field_label" data-labelID="1">Full Name:</div>
+                    		<input type="text" data-fieldID="1" class="preview" value="">
+                        </div>
+                        <div class="right">
+                        	<img src="img/edit-icon.png"><span class="blue">Edit Field</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                 </li>
+                 
+                 <!-- Email Address Field -->
+                 <li class="form_field" id="2">
+                 	<div class="edit_field" style="display:none;">
+                    	<div class="left">
+	                    	<input type="text" value="Email Address" class="edit" onChange="labelText(2,$(this).val())">
+                            <input type="number" style="width:46px;" value="280" class="edit" onChange="textWidth(2,$(this).val())" /><span class="edit_label">Width</span>
+                            <br/>
+                            <input type="text" value="" data-fieldID="2" class="preview">
+                        </div>
+                        <div class="right">
+                        	<input type="checkbox" checked="checked" style="display:none">
+                            <span class="required">Field is required</span><input type="checkbox" checked="checked" disabled="disabled"><br/>
+                            <span class="red">Delete Field</span><img src="img/field-delete-icon.png" class="delete-field" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="preview_field">
+                    	<div class="left">
+                        	<div class="field_label" data-labelID="2">Email Address:</div>
+                    		<input type="text" data-fieldID="2" class="preview" value="">
+                        </div>
+                        <div class="right">
+                        	<img src="img/edit-icon.png"><span class="blue">Edit Field</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                
+                <!-- Custom Text Field -->
+                <li class="form_field" id="3">
+                	<div class="edit_field" style="display:none;">
+                    	<div class="left">
+	                    	<input type="text"  value="Custom Text Field" class="edit" onChange="labelText(3,$(this).val())">
+                            <input type="number" style="width:46px;" value="280" class="edit" onChange="textWidth(3,$(this).val())" /><span class="edit_label">Width</span>
+                            <br/>
+                            <input type="text" data-fieldID="3" value="" class="preview">
+                        </div>
+                        <div class="right">                        	
+                            <span class="required">Field is required</span><input type="checkbox"><br/>
+                            <span class="red">Delete Field</span><img src="img/field-delete-icon.png" class="delete-field" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="preview_field">
+                    	<div class="left">
+                        	<div class="field_label" data-labelID="3">Custom Text Field:</div>
+                    		<input type="text" class="preview" value="">
+                        </div>
+                        <div class="right">
+                        	<img src="img/edit-icon.png"><span class="blue">Edit Field</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                
+                <!-- Date Selection Field -->
+                <li class="form_field" id="4">
+                	<div class="edit_field" style="display:none;">
+                    	<div class="left">
+	                    	<input type="text" value="Date Selection Field" class="edit" onChange="labelText(5,$(this).val())">
+                            <input type="number" style="width:46px;" disabled="disabled" value="120" class="edit" onChange="textWidth(5,$(this).val())" /><span class="edit_label">Fixed Width</span>
+                            <br/>
+                            <input type="text" value="" data-fieldID="4" class="preview date_picker_field">
+                        </div>
+                        <div class="right">
+                        	<input type="checkbox" style="display:none">
+                            <span class="required">Field is required</span><input type="checkbox"><br/>
+                            <span class="red">Delete Field</span><img src="img/field-delete-icon.png" class="delete-field" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="preview_field">
+                    	<div class="left">
+                        	<div class="field_label" data-labelID="4">Date Selection Field:</div>
+                    		<input type="text" class="preview date_picker_field" data-fieldID="4" disabled="disabled">
+                        </div>
+                        <div class="right">
+                        	<img src="img/edit-icon.png"><span class="blue">Edit Field</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                
+                <!-- Select Box Field -->
+                <li class="form_field" id="5">
+                	<div class="edit_field" style="display:none;">
+                    	<div class="left">
+	                    	<input type="text" value="Select Box Field" class="edit" onChange="labelText(5,$(this).val())">
+                            <input type="number" style="width:46px;" value="120" class="edit" onChange="textWidth(5,$(this).val())" /><span class="edit_label">Width</span><br/>                            
+                            <div class="edit_select" data-fieldID="5">
+                                <div class="edit_select_option" data-optionID="1">
+                                    <span class="edit_label">Option Label</span><br/>
+                                    <input type="text" value="" class="edit" onKeyUp="optionLabel(5,1,$(this).val())">                                                                 
+                                </div>                                
+                                <div class="edit_label add_select_option" onClick="addSelectOption(5)"><img src="img/yellow-add.png" /> Add New Option</div>
+                            </div>
+                            <select data-fieldID="5" class="preview">
+                            	<option value="001APPL" data-optionID=1></option>
+                            </select>
+                        </div>
+                        <div class="right">
+                        	<input type="checkbox" style="display:none">
+                            <span class="required">Field is required</span><input type="checkbox"><br/>
+                            <span class="red">Delete Field</span><img src="img/field-delete-icon.png" class="delete-field" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="preview_field">
+                    	<div class="left">
+                        	<div class="field_label" data-labelID="5">Select Box Field:</div>
+                    		<select data-fieldID="5" class="preview">
+                            	<option value="" data-optionID=1></option>
+                            </select>
+                        </div>
+                        <div class="right">
+                        	<img src="img/edit-icon.png"><span class="blue">Edit Field</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                
+                <!-- Multi-Select Box Field -->
+                <li class="form_field" id="6">
+                	<div class="edit_field" style="display:none;">
+                    	<div class="left">
+	                    	<input type="text" value="Multiple Choice Field" class="edit" onChange="labelText(6,$(this).val())">
+                            <input type="number" style="width:46px;" value="120" class="edit" onChange="textWidth(6,$(this).val())" /><span class="edit_label">Width</span>
+                            <input type="number" style="width:36px;" value="50" class="edit" onChange="setHeight(6,$(this).val())" /><span class="edit_label">Rows</span><br/>                            
+                            <div class="edit_select" data-fieldID="6">
+                                <div class="edit_select_option" data-optionID="1">
+                                    <span class="edit_label">Option Label</span><br/>
+                                    <input type="text" value="" class="edit" onKeyUp="optionLabel(6,1,$(this).val())">                                                                 
+                                </div>                                
+                                <div class="edit_label add_select_option" onClick="addSelectOption(6)"><img src="img/yellow-add.png" /> Add New Option</div>
+                            </div>
+                            <select data-fieldID="5" class="preview" multiple="multiple" style="height:50px;">                           
+                            	<option value="" data-optionID=1></option>
+                            </select>
+                        </div>
+                        <div class="right">
+                        	<input type="checkbox" style="display:none">
+                            <span class="required">Field is required</span><input type="checkbox"><br/>
+                            <span class="red">Delete Field</span><img src="img/field-delete-icon.png" class="delete-field" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="preview_field">
+                    	<div class="left">
+                        	<div class="field_label" data-labelID="7">Multiple Choice Field:</div>
+                    		<select data-fieldID="6" class="preview" multiple="multiple" style="height:50px;">
+                            	<option value="" data-optionID=1></option>
+                            </select>
+                        </div>
+                        <div class="right">
+                        	<img src="img/edit-icon.png"><span class="blue">Edit Field</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                
+                
+                
+                <!-- Textarea Field -->
+                <li class="form_field" id="7">
+                	<div class="edit_field" style="display:none;">
+                    	<div class="left">
+	                    	<input type="text" value="Multi-line Text Field" class="edit" onChange="labelText(7,$(this).val())">&nbsp;
+                            <input type="number" style="width:46px;" value="280" class="edit" onChange="textWidth(7,$(this).val())" /><span class="edit_label">Width</span>
+                            <input type="number" style="width:36px;" value="4" class="edit" onChange="selectRows(7,$(this).val())" /><span class="edit_label">Rows</span>
+                            <br/>
+                            <textarea class="preview" data-fieldID="7" rows="4"></textarea>
+                        </div>
+                        <div class="right">
+                        	<input type="checkbox" style="display:none">
+                            <span class="required">Field is required</span><input type="checkbox"><br/>
+                            <span class="red">Delete Field</span><img src="img/field-delete-icon.png" class="delete-field" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="preview_field">
+                    	<div class="left">
+                        	<div class="field_label" data-labelID="7">Multi-line Text Field:</div>
+                    		<textarea class="preview" data-fieldID="7" rows="4"></textarea>
+                        </div>
+                        <div class="right">
+                        	<img src="img/edit-icon.png"><span class="blue">Edit Field</span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+            </ul>
+            </div>
+        </div>
+       
+    <div class="clear"></div>
+</div>
+<script src="datepicker/javascript/functions.js"></script>
+<script src="js/jquery.sortable.js"></script>
+<link type="text/css" rel="stylesheet" media="screen" href="datepicker/css/style.css" />
+<script>
+	jQuery(document).ready(function($) {
+		
+  		$('li.form_field').click(function(){
+			if($(this).find('.preview_field').is(':visible')){
+				$('.edit_field').hide()
+				$('.preview_field').show()
+				$(this).find('.edit_field').show()
+				$(this).find('.preview_field').hide()
+			}else{
+				
+			}			
+		});
+	});
+	function selectRows(fieldID,rows){
+		$('*[data-fieldID="'+fieldID+'"]').attr({'rows':rows});	
+	}
+	function textWidth(fieldID,width){
+		$('input[data-fieldID="'+fieldID+'"],textarea[data-fieldID="'+fieldID+'"]').css({'width':width+'px'});	
+	}
+	function labelText(labelID,label){
+		$('div[data-labelID="'+labelID+'"]').html(label+':');	
+	}	
+	function optionLabel(labelID,optionID,label){
+		$('select[data-fieldID="'+labelID+'"] option[data-optionID="'+optionID+'"]').html(label).val(value);		
+	}
+	function setHeight(fieldID,height){
+		$('select[data-fieldID="'+fieldID+'"]').css({'height':height+'px'});	
+	}	
+	function addSelectOption(fieldID){
+		var lastOption = $('select[data-fieldID="'+fieldID+'"]').find("option:last");
+		var lastOptionID = lastOption.attr("data-optionID");
+		var nextOptionID = +lastOptionID+1;
+		var editSelectOption = '<div class="edit_select_option" data-optionID="'+nextOptionID+'"><span class="edit_label">Option Label</span><br/><input type="text" value="" class="edit" onKeyUp="optionLabel('+fieldID+','+nextOptionID+',$(this).val())"> <img src="img/field-delete-icon.png" onclick="removeSelectOption('+fieldID+','+nextOptionID+')" /></div>';
+		var selectOption = '<option value="" data-optionID="'+nextOptionID+'"></option>';
+		
+		$('.edit_select[data-fieldID="'+fieldID+'"] .edit_select_option[data-optionID="'+lastOptionID+'"]').after(editSelectOption);
+		$('select[data-fieldID="'+fieldID+'"] option[data-optionID="'+lastOptionID+'"]').after(selectOption);
+		
+		
+	}
+	function removeSelectOption(fieldID,optionID){
+		$('div[data-fieldID="'+fieldID+'"] div.edit_select_option[data-optionID="'+optionID+'"]').remove();
+		$('select[data-fieldID="'+fieldID+'"] option[data-optionID="'+optionID+'"]').remove();
+	}
+	$("#form_fields").sortable();
+	$('#form_fields').sortable().bind('sortupdate', function() {
+            //Store the new order.
+			var fieldOrder = [];
+			$("#form_fields").find(".form_field").each(function(){ fieldOrder.push(this.id); });
+			//alert(fieldOrder);
+        });
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<?php
+include '../inc/trois.php';
+$con = conDB();
+$r = mysql_query("SELECT account_id,datestamp from transactions where type='sub_cancel' and datestamp<unix_timestamp()-86400*30",$con);
+while($can = mysql_fetch_array($r)){
+	$q = mysql_query("SELECT * from transactions where type='sub_create'
+}
