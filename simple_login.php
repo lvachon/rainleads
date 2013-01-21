@@ -1,6 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php include_once 'inc/trois.php'; 
-$account = showAccount();?>
+$account = showAccount();
+
+?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <?php include('inc/head.php'); ?>
@@ -49,9 +51,9 @@ border: 1px solid #C8C8C8;
         			<?= $_GET['msg'] ?>
         		</div>
         	<?php } ?>	
-            <div class="left" style="margin-right:20px;"><?=$account->thumbHTML(175,0);?></div>
+            <div class="left" style="margin-right:20px;"><?=$account->thumbHTML(156,0);?></div>
             <form method='post' action='login.php' class="left">
-                <table width="100%" cellpadding="5">
+                <table width="100%" cellpadding="0">
                     <tr>
                     	<td valign="top" class="strong">Email Address:<br/><input type="text" name='email' class="big-input" /></td>
                     </tr>                     

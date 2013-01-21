@@ -28,12 +28,19 @@
  *  */
 
 // NETWORK BASIC CONFIG
-$SITE_NAME = "Rain Leads";
+$SITE_NAME = "RainLeads";
 $HOME_URL  = "https://www.rainleads.com/";
 $DOMAIN    = "rainleads.com";
 $HOME_DIR  = "/var/www/vhosts/mocircles.com/httpdocs";
 $SITE_CONTACT = "info@rainleads.com";//"admin@{$DOMAIN}";//this is used for send feedback.php
 $PER_PAGE = 20;//this is used for the wall autoscroll
+$LOGGED_OUT_PAGES = array('/why.php','/why2.php','/plans.php','/index2.php','/lead-management.php','/index.php','/virtual-business-cards.php','/about.php','/faq.php','/terms.php','/privacy.php','/enterprise.php','/contact.php','/customForms.php','/signup.php','/contact-form-builder.php','/facebook-forms.php','/error.php','/tour.php'); 
+
+
+if(strlen($_COOKIE['subdomain'])){
+	$sub = str_replace('www.',$_COOKIE['subdomain'].".",$HOME_URL);
+	//header("Location: {$sub}index.php");
+}
 // DATABASE CONFIG
 $DB_HOST  = "localhost";
 $DB_USER  = "rl";
@@ -59,7 +66,7 @@ if(!count($ADMIN_IDS)){$ADMIN_IDS = array(0);}
 $PRIMARY_CONTACT   = "kvachon@pearsestreet.com";
 $FROM_HEADER = "From: no-reply@{$DOMAIN}";
 
-$SUB_PLANS = array(array("name"=>"free","price"=>"0","storage"=>2,"users"=>1,'forms'=>1),array("name"=>"lite","price"=>"9","storage"=>50,'users'=>1,'forms'=>1),array("name"=>"basic","price"=>"29","storage"=>100,'users'=>5,'forms'=>2),array("name"=>"pro","price"=>"49","storage"=>250,'users'=>15,'forms'=>PHP_INT_MAX));
+$SUB_PLANS = array(array("name"=>"free","price"=>"0","storage"=>2,"users"=>15,'forms'=>PHP_INT_MAX),array("name"=>"lite","price"=>"9","storage"=>50,'users'=>1,'forms'=>1),array("name"=>"basic","price"=>"29","storage"=>100,'users'=>5,'forms'=>2),array("name"=>"pro","price"=>"49","storage"=>250,'users'=>15,'forms'=>PHP_INT_MAX));
 
 
 
@@ -152,8 +159,8 @@ class User
 		}
 		$con = conDB();
 		$r = mysql_query("UPDATE users set secret='".mysql_escape_string($secret)."' WHERE id={$this->id} LIMIT 1",$con);
-		setcookie("secret",$secret,time()+86400);
-		setcookie("id",$this->id,time()+86400);
+		setcookie("secret",$secret,time()+86400,"/",".".$DOMAIN);
+		setcookie("id",$this->id,time()+86400,"/",".".$DOMAIN);
 		setcookie("subdomain",showAccount()->subdomain,time()+(86400*365),"/",".".$DOMAIN);
 		$this->data['last_login'] = strval(time());
 			$this->save();
@@ -161,10 +168,11 @@ class User
 	}
 	
 	function logout(){
+		global $HOME_URL,$DOMAIN;
 		if(!intval($this->id)){return false;}
 		$r = mysql_query("UPDATE users set secret='' WHERE id={$this->id} LIMIT 1",$con);
-		setcookie("secret",'',time()-86400);
-		setcookie("id",'',time()-86400);
+		setcookie("secret",'',time()-86400,'/','.'.$DOMAIN);
+		setcookie("id",'',time()-86400,'/','.'.$DOMAIN);
 		return true;
 	}
 	

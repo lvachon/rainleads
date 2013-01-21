@@ -1,9 +1,21 @@
-<?php include '../inc/trois.php';
-include 'authnetfunction.php';
-loginRequired();
-accountRequired();
+<?php
+$f = fopen("FUCK","a");
+fwrite($f,"A");
+
+include_once '/var/www/vhosts/mocircles.com/httpdocs/inc/trois.php';
+include '/var/www/vhosts/mocircles.com/httpdocs/account/authnetfunction.php';
+if($user){
+	$viewer = $user;
+	$account = $user->getAccount();
+	$HOME_URL = $account->subdomain.".rainleads.com";
+	$signup=true;
+}else{
+	loginRequired();
+	accountRequired();
+	$account = $viewer->getAccount();
+	$signup=false;
+}
 $con = conDB();
-$account = $viewer->getAccount();
 $AUTHNET_API_LOGIN_ID="7tZv74PcN7";
 $AUTHNET_API_TX_KEY="6WM9t39tQ9R9Us9Y";
 $startdate = $account->expiration;
@@ -29,7 +41,7 @@ $state = $_POST['bstate'];
 $zip = $_POST['bzip'];
 $promo = $_POST['promo'];
 $email = $viewer->email;
-
+fwrite($f,"B");
 //Check for promocode, set promo row if applicable
 if(strlen($promo)){
 	$r = mysql_query("SELECT * from promo where lcase(code)=lcase('".mysql_escape_string($promo)."')",$con);
@@ -68,10 +80,11 @@ $post_values = array(
 		"x_address"			=> $address,
 		"x_city"			=> $city,
 		"x_state"			=> $state,
-		"x_zip"				=> $zip,
-		"x_email"			=> $email
+		"x_zip"				=> $zip
 
 );
+
+fwrite($f,"C");
 $post_string = "";
 foreach( $post_values as $key => $value )
 {
@@ -90,9 +103,49 @@ $response_array = explode($post_values["x_delim_char"],$post_response);
 if(intval($response_array[0])!=1){
 	$post_values['x_card_num']="**** **** **** ".substr($post_values,strlen($post_values['x_card_num'])-4);//Censor ccnum to last four only
 	mysql_query("INSERT INTO transactions(user_id,account_id,type,data,datestamp) VALUES({$viewer->id},{$account->id},'sub_fail','".mysql_escape_string(serialize(array('sent'=>$post_values,'read'=>$response_array)))."',unix_)",$con);
-	errorMsg("Your card was not accepted: {$response_array[3]}");
-	die();
+	if(!$signup){
+		errorMsg("Your card was not accepted: {$response_array[3]}");
+		die();
+	}else{
+		header("Location: /account/upgrade.php?msg=".urlencode("Your card was not accepted: {$response_array[3]}"));
+		die();
+	}
 }
+
+//If we've gotten this far, the auth was OK, so now we can void that auth.
+
+$post_values = array(
+
+		// the API Login ID and Transaction Key must be replaced with valid values
+		"x_login"			=> $AUTHNET_API_LOGIN_ID,
+		"x_tran_key"		=> $AUTHNET_API_TX_KEY,
+
+		"x_version"			=> "3.1",
+		"x_delim_data"		=> "TRUE",
+		"x_delim_char"		=> "|",
+		"x_relay_response"	=> "FALSE",
+
+		"x_type"			=> "VOID",
+		"x_trans_id"		=> $response_array[6]
+
+);
+$post_string = "";
+foreach( $post_values as $key => $value )
+{
+	$post_string .= "$key=" . urlencode( $value ) . "&";
+}
+fwrite($f,"D");
+$post_string = rtrim( $post_string, "& " );
+$request = curl_init($post_url); // initiate curl object
+curl_setopt($request, CURLOPT_HEADER, 0); // set to 0 to eliminate header info from response
+curl_setopt($request, CURLOPT_RETURNTRANSFER, 1); // Returns response data instead of TRUE(1)
+curl_setopt($request, CURLOPT_POSTFIELDS, $post_string); // use HTTP POST to send form data
+curl_setopt($request, CURLOPT_SSL_VERIFYPEER, FALSE); // uncomment this line if you get no gateway response.
+$post_response = curl_exec($request); // execute curl post and store results in $post_response
+curl_close ($request); // close curl object
+$response_array = explode($post_values["x_delim_char"],$post_response);
+
+//AUth voided
 
 
 if(strlen($account->sub_id)){
@@ -154,7 +207,7 @@ if(!$update){
 }
 
 $response = send_request_via_curl("api.authorize.net","/xml/v1/request.api",$xml);
-
+fwrite($f,"E");
 if ($response)
 {
 	/*
@@ -166,8 +219,13 @@ if ($response)
 	list ($refId, $resultCode, $code, $text, $subscriptionId) =parse_return($response);
 
 	if($text!="Successful."){
-		errorMsg($text);
-		die();
+		if(!$signup){
+			errorMsg($text);
+			die();
+		}else{
+			header("Location: /account/upgrade.php?msg=".urlencode($text));
+			die();
+		}
 	}
 	
 	
@@ -219,10 +277,12 @@ if ($response)
 	fclose($fp);
 	$con = conDB();
 	mysql_query("UPDATE accounts set sub_id='".mysql_escape_string($subscriptionId)."', plantype='".mysql_escape_string($plan['name'])."',mo_price={$plan['price']} where id={$account->id} LIMIT 1",$con);
-	header("Location: index.php");
+	header("Location: {$HOME_URL}/account/index.php");
 }
 else
 {
 	echo "Transaction Failed. <br>";
 }
 
+fwrite($f,"F");
+fclose($f);

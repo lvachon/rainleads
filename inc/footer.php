@@ -14,25 +14,15 @@
 			<li><a href="<?=$HOME_URL?>enterprise.php">Enterprise Solutions</a></li>
         </ul>
     </div>
-     <div class="left" style="margin-left:10px;">
-        <ul>
-            <li><a href="<?=$HOME_URL?>facebook-forms.php">Facebook Forms</a></li>
-            <li><a href="<?=$HOME_URL?>contact-form-builder.php">Contact Form Builder</a></li>
-        </ul>
-    </div>
+     
     <div class="right">
-        Copyright 2011-2012 RainLeads.com
+        Copyright 2011-2013 RainLeads, Inc.
     </div>
     <div class="clear"></div>
 </div>
-<?php $account = $viewer->getAccount();
-if(strlen($account->data['analytics'])){
-	echo $account->data['analytics'];
-}?>
+
 <div id="fb-root"></div>
-<script src="https://connect.facebook.net/en_US/all.js"></script>
-<div id="fb-root"></div>
-<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script src="https://connect.facebook.net/en_US/all.js#xfbml=1"></script>
 <script>
   FB.init({appId: '346873902077931', status: true, cookie: true, xfbml: true});
   FB.Event.subscribe('auth.sessionChange', function(response) {
@@ -57,3 +47,7 @@ if(strlen($account->data['analytics'])){
 	    }, {scope:'manage_pages'});
 	}
 </script>
+<?php $account = $viewer->getAccount();
+if(strlen($account->data['analytics'])){
+	echo $account->data['analytics'];
+}?>

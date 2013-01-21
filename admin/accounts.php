@@ -3,7 +3,7 @@
 <head>
 <?php include 'head.php'; 
 
-$pr = mysql_query("SELECT *,(SELECT min(datestamp) from membership where account_id=accounts.id) as joined from accounts order by joined asc",$con);
+$pr = mysql_query("SELECT *,(SELECT min(datestamp) from membership where account_id=accounts.id) as joined from accounts order by joined DESC",$con);
 ?>
 	
 </head>
@@ -32,7 +32,8 @@ $pr = mysql_query("SELECT *,(SELECT min(datestamp) from membership where account
                 <div class="ui-widget-content">
                     <table width="776" cellpadding="8" cellspacing="0" style="font-size:12px; font-weight:normal;" class="table-list" id="userList">
                     	<tr style="font-weight:bold;">
-                        	<td align="left" width="150">Title</td>
+                        	<td align="left" width="100">Title</td>
+                            <td>Subdomain</td>
 							<td>Membership</td>
                             <td>Users</td>
 							<td>Storage</td>
@@ -48,11 +49,13 @@ $pr = mysql_query("SELECT *,(SELECT min(datestamp) from membership where account
 								$nf = mysql_fetch_array($rr);
 								$nf = intval($nf[0]);
 							?><tr>
-								<td><a href='account.php?id=<?=$ct->id;?>'><?=$ct->title;?></a></td>
+								<td><div style="width:100px;word-wrap:break-word;"><a href='account.php?id=<?=$ct->id;?>'><?=$ct->title;?></a></div></td>
+                                <td><?=$ct->subdomain?></td>
 								<td><?=$ct->membership;?></td>
 								<td><?=count($ct->members);?>/ <?=$ct->userLimit();?></td>
-								<td><?=floor($ct->storageUsed()/10485.76)/100;?>/ <?=floor($ct->storageLimit()/10485.76)/100;?>MB</td>
-								<td><?=$nf;?>/<?=$ct->formLimit();?></td>
+								<td><div style="width:100px;word-wrap:break-word;"><?=floor($ct->storageUsed()/10485.76)/100;?>/ <?=floor($ct->storageLimit()/10485.76)/100;?>MB</div></td>
+								<td><div style="width:100px;word-wrap:break-word;"><?=$nf;?>/
+										<?php if($ct->formLimit() > 5000){ echo "unlimited"; }else{ echo $ct->formLimit(); }?></div></td>
 								<td><?=date("M j, Y",$row['joined']);?></td>
 							</tr>
 							<?php }	?>

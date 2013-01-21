@@ -2,7 +2,7 @@
 
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}
 article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
-body{line-height:1}
+body{line-height:1;-webkit-font-smoothing: antialiased;}
 ol,ul{list-style:none}
 blockquote,q{quotes:none}
 blockquote:before,blockquote:after,q:before,q:after{content:none}
@@ -69,6 +69,31 @@ em {
 	font-weight: 500;
 	text-align:center;
 }
+.box {
+	
+	padding:10px 0;
+	color:#444;
+	margin: 10px 0;
+	font-size: 13px;
+}
+	.box h3 {
+		font-weight: bold;
+		font-size: 16px;
+		color:#555;
+	}
+.feature {
+	margin:15px 0;
+	font-size: 14px;
+	color:#898989;
+	font-weight: bold;
+}
+	.feature img {
+		margin-right:5px;
+	}
+	.feature div {
+		position: relative;
+		top:2px;
+	}
 .hand {
 	font-family: 'Schoolbell', cursive;	
 }
@@ -109,7 +134,7 @@ em {
 	font-weight:bold;
 	font-size:16px;
 	text-align:center;
-	border-radius:0px;
+	border-radius:2px;
 }
 .title_img {
 	display:block;
@@ -120,10 +145,12 @@ em {
 	padding:20px;	
 	width:980px;
 	margin:auto;
+	border:1px solid #A1C1D3;
+	border-top:none;
 }
 #header {
-	height:110px;
-	padding-top:15px;
+	height:85px;
+	padding-top:5px;
 	border-bottom:1px solid #005987;	
 }
 #header .button, #header .green_button {
@@ -235,7 +262,7 @@ em {
 	margin: 7px 0;
 	background:#fff;
 	padding:15px;
-	border:1px solid #9babb4;
+	border:1px solid #A1C1D3;
 	font-size:14px;
 	line-height:19px;
 	color:#484848;
@@ -299,7 +326,7 @@ em {
 /** Plans **/
 .plan {
 	width:220px;;
-	margin:0px 2%;	
+	margin:0px;	
 	float:left;
 	background:#fff;
 	border-radius:5px;
@@ -360,6 +387,72 @@ em {
 	padding:10px;
 }
 
+/** FEATURE TABLE **/
+.feature_table {
+	border:5px solid #0F5579;
+}
+.feature_table tr th{
+	background: #E4EBEF;
+	height: 60px;
+	padding: 5px;
+	padding-top:10px;
+	text-align: center;
+	line-height: 20px;
+	border-bottom: 1px solid #c0c0c0;
+	border-right:1px solid rgba(0,0,0,0.1);
+	font-size: 13px;
+}
+.feature_table tr td {
+	background: #fff;
+	padding: 10px;
+	font-weight: bold;
+	font-size: 14px;
+	text-align: center;
+	color:#435863;
+	border: 1px solid #c0c0c0;
+}
+
+.feature_table tr td:first-child, .feature_table tr th:first-child{
+	font-weight: normal;
+	text-align: right;
+	vertical-align: middle;
+background:#fff;
+
+	font-weight: normal;
+	color:#435863;
+	font-size: 15px;
+}
+.feature_table tr td.plan-pro{
+	background:#fff;
+	
+}
+ .feature_table tr th.plan-pro{
+ background:#BFD9E7;
+ }
+.feature_table tr td .check {
+	margin-top: px;
+}
+.plan-name {
+	font-size:24px;
+	font-weight: bold;
+	color:#02456d;
+}
+
+.plan-price {
+	font-size:16px;
+	color:#0d7abb;
+	position: relative;
+	top:2px;
+	font-weight: bold;
+}
+.plan-caption {
+	font-size:12px;
+	font-weight: bold;
+	text-transform: uppercase;
+	color:#f18f2d;
+}
+
+/***/
 .text-error{
 	background:#F99;
 	border: 1px solid #F00;

@@ -43,7 +43,6 @@
     </div>             
     <div class="clear"></div>
 </div>
-<?php if($account->membership!="free" && $account->membership!="lite"){?>
 <div class="link" data-file="edit-facebook.php" id="facebook-tab" onclick="document.location.href='<?=$HOME_URL?>forms/edit-facebook.php'">
     <div class="icon left">
         <img src="<?=$HOME_URL?>img/facebook-icon.png" id="facebook-icon" />
@@ -53,7 +52,6 @@
     </div>             
     <div class="clear"></div>
 </div>
-<?php } ?>
 <?php if($viewer->getAccount()->data['view_stats'] != '0' || ($viewer->getAccount()->data['view_stats'] == '0' && $viewer->id==$viewer->getAccount()->user_id)){?>     
 <div class="link" data-file="stats/form_totals.php" id="stats-tab" onclick="document.location.href='<?=$HOME_URL?>stats/form_totals.php'">
     <div class="icon left">
@@ -71,7 +69,7 @@
 	        <img src="<?=$HOME_URL?>img/globe-icon.png" id="globe-icon" />
 	    </div>
 	    <div class="title left">
-	        Microsite
+	        Cobase vCard
 	    </div>             
 	    <div class="clear"></div>
 	</div>          

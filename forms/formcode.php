@@ -1,7 +1,7 @@
 <?php include '../inc/trois.php';
 loginRequired();
 $acct = new Account(verAccount());
-if($acct->membership=="lite" || $acct->membership=="free"){errorMsg("Export codes are disabled for your account. <a href='/account/upgrade.php'>Upgrade</a> your account.");die();}
+if($acct->membership=="lite"){errorMsg("Export codes are disabled for your account. <a href='/account/upgrade.php'>Upgrade</a> your account.");die();}
 $f = new Form($_GET['id']);
 if($f->account_id!=$acct->id){die("This form does not belong to the current account {$f->account_id}=={$acct->id}");}
 ?>
@@ -47,18 +47,18 @@ if($f->account_id!=$acct->id){die("This form does not belong to the current acco
     <br/>
     <div class="tab_box vertical_tabs">
     	<div class="tab active" id="tab-code" onClick="showTab('code')">Website Code</div>
-        <div class="tab" id="tab-facebook" onClick="showTab('facebook')">Facebook Page</div>
+        <div class="tab" id="tab-facebook" onClick="document.location.href='<?=$HOME_URL?>forms/edit-facebook.php'">Facebook Page</div>
     </div>
     <div class="tab_content vertical_tab_content" data-tab="code" style="font-size:14px; line-height:20px;">
 		<div id='formcode<?=$f->id;?>'>
 			<input type='hidden' value="<?=urlencode($f->data['title']);?>_iframe" id='tc' onkeydown='clearInterval(intv);intv = setTimeout("updateCodes(curType,$(\"#tc\").val())",250);'/>
-			Code Type: <select onchange = 'updateCodes(this.value,"<?=urlencode($f->data['title']);?>_"+this.value);$("#tc").val("<?=urlencode($f->data['title']);?>_"+this.value);'>
-				<option value='iframe'>IFrame</option>
-				<option value='ajax'>JS Request</option>
-			</select><br/>
+			<!--Code Type: <select onchange = 'updateCodes(this.value,"<?=urlencode($f->data['title']);?>_"+this.value);$("#tc").val("<?=urlencode($f->data['title']);?>_"+this.value);'>
+				<option value='iframe'>iFrame Code</option>
+				<option value='ajax'>Javascript Request</option>
+			</select><br/>-->
 			
 			<textarea rows='10' cols='60' id='codetext'><iframe src='https://www.rainleads.com/forms/showform.php?id=<?=$f->id;?>&code=<?=urlencode($f->data['title']);?>_iframe' width='<?=max(intval($f->data['width']),400);?>' height='600' frameborder=0></iframe></textarea><br />
-			<a class="button left" href="javascript:void(0);" onClick="$.post('email-code.php?id=<?=$f->id?>',function(data){$.fancybox(data);});">Email Code</a><div class="clear"></div>
+			<a class="button blue_button right" style="margin:2px 5px;" href="javascript:void(0);" onClick="$.post('email-code.php?id=<?=$f->id?>',function(data){$.fancybox(data);});">Email Your Embed Code</a><div class="clear"></div>
 		</div>
 	</div>
 	<div class="tab_content" data-tab="facebook" style="display:none;">

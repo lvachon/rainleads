@@ -131,7 +131,8 @@ $AUTHNET_API_TX_KEY="6WM9t39tQ9R9Us9Y";
 				</tr>
 			</table>
 		</div>
-		<div id='chooseclass'>
+		<div class="clear"></div>
+		<div id='chooseclass' style="margin-top:25px;">
 			Canceling your subscription will immediately downgrade your account to the free package.  
 			Any features that are part of the paid packages will me unavailable.  
 			Are you sure you wish to do this?

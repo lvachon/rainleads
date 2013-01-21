@@ -39,7 +39,13 @@ $date = mktime(0,0,0,$month,$day,$year); ?>
     }
     foreach(range(1,$molength[$month]) as $x){
         $daystart = mktime(0,0,0,$month,$x,$year);
-        $t = mysql_query("SELECT id from events WHERE account_id = {$viewer->getAccount()->id} AND end_time>{$daystart} AND start_time<={$daystart}+86400 ", $con);
+		if(intval($_GET['user'])){
+			$user_id = intval($_GET['user']);
+			$useradd = "AND user_id = $user_id";
+		}else{
+			$useradd = "";
+		}
+        $t = mysql_query("SELECT id from events WHERE account_id = {$viewer->getAccount()->id} AND end_time>{$daystart} AND start_time<={$daystart}+86400 $useradd ", $con);
         $c = intval(mysql_num_rows($t));
         if($date>=$daystart and $date<$daystart+86400){$today=" today";}else{$today="";}
         $numEvents++; ?>

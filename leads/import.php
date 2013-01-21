@@ -126,26 +126,46 @@ if($_FILES['import']['tmp_name']){
 		die();
 	}else{
 		?>
-		<table>
-			<tr><th>Error Message</th><th>Row data</th></tr>
-			<?php foreach($invalid_rows as $row){?>
-				<tr><td><?=$row['reason'];?></td><td><textarea><?=implode(",",$row['data']);?></textarea></td></tr>
-			<?php } ?>
-		</table>
+		<link type="text/css" rel="stylesheet" media="screen" href="<?= $HOME_URL ?>css/styles.css" />
+		<h1>Import Leads</h1>
+		<div class="clear"></div>
+		<hr class="title-line">		
+		<br/>
+		<div class="strong">
 		<?php
 		echo count($invalid_rows) . " rows failed.";
-		echo strval(count($data)-count($invalid_rows)) . " rows imported. <a href='index.php?form_id={$id}' target='_parent'>View imported rows</a>";
+		?>
+		</div>
+		<div class="strong"><?php echo strval(count($data)-count($invalid_rows)) . " rows imported. <a href='index.php?form_id={$id}' target='_parent'>View imported rows</a>";?></div><?php
 	}
 	
 	
 }else{
 	?>
 <html>
-	<body>
+<head>
+	<link type="text/css" rel="stylesheet" media="screen" href="<?= $HOME_URL ?>css/styles.css" />
+	<style>
+		.strong {
+			color:#444;
+		}
+		input[type=text]{
+			border: 1px solid #c0c0c0;
+			min-width: 280px;
+			padding: 4px;
+		}
+	</style>
+</head>
+	<body style="width:400px;">
+		<h1>Import Leads</h1>
+		<div class="clear"></div>
+		<hr class="title-line">
 		<form method='post' enctype='multipart/form-data' action='import.php'>
-			Title:<input type='text' name='title' value="import <?=date("M j Y, H:iT",time());?>"/><br/>
-			CSV File:<input type='file' name='import'/>
-			<input type='submit' value='Import'/>
+			<div class="strong">Imported Batch's Title:</div>
+			<input type='text' name='title' value="import <?=date("M j Y, H:iT",time());?>"/><br/><br/>
+			<div class="strong">Choose CSV File:</div>
+			<input type='file' name='import'/><br/><br/>
+			<input type='submit' class="button strong blue_button" style="padding:8px 20px;" value='Import Leads'/>
 		</form>
 	</body>
 </html>

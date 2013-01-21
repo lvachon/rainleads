@@ -1,12 +1,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?=$SITE_NAME?></title>
-<?php if(verCookie()){?>
-<link type="text/css" rel="stylesheet" media="screen" href="<?=$HOME_URL?>css/style.css?rand=<?= rand() ?>" />
+<?php if(!in_array($_SERVER['SCRIPT_NAME'],$LOGGED_OUT_PAGES)){?>
+	<link type="text/css" rel="stylesheet" media="screen" href="<?=$HOME_URL?>css/style.css?rand=<?= rand() ?>" />
 <?php }else{?>
-<link type="text/css" rel="stylesheet" media="screen" href="<?=$HOME_URL?>css/styles.css?rand=<?= rand() ?>" />
+	<link type="text/css" rel="stylesheet" media="screen" href="<?=$HOME_URL?>css/styles.css?rand=<?= rand() ?>" />
 <?php } ?>
 <link href='https://fonts.googleapis.com/css?family=Schoolbell' rel='stylesheet' type='text/css'>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script src="<?=$HOME_URL?>jquery.fancybox.js"></script>
 <script src="<?=$HOME_URL?>js/rsv.js"></script>
 <script type="text/javascript" src="<?=$HOME_URL;?>js/jstz.min.js"></script> 
@@ -34,9 +34,7 @@ $('.tip').poshytip({
 	offsetY:5,
 	offsetX:0
 });
-<?php if(strlen($_GET['msg'])){?>
-	$.fancybox('<h2><?=urldecode($_GET['msg'])?></h2>');
-<?php } ?>
+
 
 });
 </script>
@@ -62,7 +60,7 @@ var google_custom_params = window.google_tag_params;
 var google_remarketing_only = true;
 /* ]]> */
 </script>
-<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
 </script>
 <noscript>
 <div style="display:inline;">

@@ -86,15 +86,15 @@ $(function() {
 	        </div>
 	    <?php }else{ ?>
 	    	<div class="right">                        	                     
-	        	<a class="button blue_button" style="margin-left:5px;" href='javascript:void()' onclick='$.fancybox({"href":"../forms/pickform.php?fancy=1","type":"ajax"});'>Create Lead</a>
+	        	<a class="button blue_button" style="margin-left:5px;" href='javascript:void()' onclick="$.post('../forms/pickform.php?fancy=1',function(data){$.fancybox(data);});">Create Lead</a>
 	        </div>
 	    <?php } ?>
 	    <div class="right">                        	                     
-	        	<a class="button blue_button" href='javascript:void()' onclick='$.fancybox({"href":"import.php","type":"iframe"});'>Import Leads</a>
+	        	<a class="button blue_button" href='javascript:void()' onclick='$.fancybox({"href":"import.php","type":"iframe","width":380,"maxHeight":"200","autoSize":"false"});'>Import Leads</a>
 	        </div>
         <div id="recent_leads">
         	<?php
-        	if(intval($_GET['form_id'])){$f = new Form($_GET['form_id']);echo "<h1>{$f->data['title']}'s leads</h1>";}else{
+        	if(intval($_GET['form_id'])){$f = new Form($_GET['form_id']);echo "<h1>".trunc($f->data['title'],12)."'s leads</h1>";}else{
         		if(intval($_GET['delcon'])){
         			$f = new Form($_GET['form_id']);echo "<h1>Archived Leads</h1>";
         		}else{
@@ -173,29 +173,29 @@ $(function() {
            	
            	
             if(intval($acct->data['see_all_leads']) || in_array($viewer->id,$acct->admins)){
-            	$qry = "form_results where length(name)>0 and length(email)>0 and form_id IN (SELECT id from forms where account_id={$account_row['id']}) {$fcon} {$filter} {$assfilter} {$qfilter} {$delcon} {$pipecon}";
+            	$qry = "form_results where length(name)>0 and length(email)>0 and form_id IN (SELECT id from forms where account_id={$acct->id}) {$fcon} {$filter} {$assfilter} {$qfilter} {$delcon} {$pipecon}";
             	$res = mysql_query("SELECT *,(SELECT user_id from assignments where result_id=form_results.id) as assigned_user,(SELECT title from statuses where id=status) as statustext,(SELECT color from statuses where id=status) as statuscolor from $qry order by {$sort} LIMIT $offset,$per_page",$con);
             }else{
-            	$qry = "form_results where length(name)>0 and length(email)>0 and id IN (SELECT result_id from assignments where user_id={$viewer->id}) {$fcon} {$filter} {$qfilter} {$delcon} {$pipecon}";
+            	$qry = "form_results where length(name)>0 and length(email)>0 and id IN (SELECT result_id from assignments where user_id={$viewer->id} and account_id={$acct->id}) {$fcon} {$filter} {$qfilter} {$delcon} {$pipecon}";
             	$res = mysql_query("SELECT *,(SELECT user_id from assignments where result_id=form_results.id) as assigned_user,(SELECT title from statuses where id=status) as statustext,(SELECT color from statuses where id=status) as statuscolor from $qry order by {$sort} LIMIT $offset,$per_page",$con);
             }
             
-            $pgl = pageLinks($qry,$page,$per_page,"index.php?sort={$_GET['sort']}&filter={$_GET['filter']}&form_id={$_GET['form_id']}&delcon={$_GET['delcon']}&pipe={$_GET['pipe']}");
-            
+            $pgl = pageLinks($qry,$page,$per_page,"index.php?sort={$_GET['sort']}&filter={$_GET['filter']}&form_id={$_GET['form_id']}&delcon={$_GET['delcon']}&pipe={$_GET['pipe']}&q={$_GET['q']}&ass={$_GET['ass']}");
+            echo "<!--{$acct->id}-->";
             while($lead = mysql_fetch_array($res)){
             	$tuser = new User($lead['assigned_user']);
             ?>
-            <div class="lead_row" onclick="document.location.href='lead.php?id=<?= $lead['id']; ?>'" >
+            <div class="lead_row"  >
                 <table width="100%" cellpadding="5" cellspacing="0">
                     <tr valign="middle">
-                    	<td onclick="document.location.href='lead.php?id=<?= $lead['id']; ?>'" valign="middle" class='id_cell' width="25" align="center"><small>#<?=$lead['id'];?></small></td> 
+                    	<td onclick="document.location.href='lead.php?id=<?= $lead['id']; ?>'" valign="middle" class='id_cell' width="25" align="center"><small>#<?=$lead['display_id'];?></small></td> 
                         <td  valign="middle" class="star_cell" width="16" align="center"><a href='javascript:void(0);' onclick='togglepipe(<?=$lead['id'];?>);' id='pipestar<?=$lead['id'];?>'><img class="tip" title="<?php if(intval($lead['pipeline'])){?>Remove from<?php }else{?>Add to<?php } ?> Pipeline" src="<?=$HOME_URL?>img/star-icon<?php if(intval($lead['pipeline'])){echo "-on";}?>.png" /></a></td>
                         <td onclick="document.location.href='lead.php?id=<?= $lead['id']; ?>'" class="status_cell" valign="middle" align="left" width="80" >
                             <div class="status <?=$lead['statuscolor'];?>"><?=$lead['statustext'];?></div>
                         </td>
                         <td onclick="document.location.href='lead.php?id=<?= $lead['id']; ?>'" valign="middle" class="name_cell" width="304" align="left"><?=$lead['name'];?><br/><small><?=$lead['email'];?></small></td>
                         <td onclick="document.location.href='lead.php?id=<?= $lead['id']; ?>'" class="date_cell" valign="middle" align="right"><?=date("M jS @ g:ia",$lead['datestamp']);?></td>
-                        <td valign="middle" align="" class="assign_cell" width="184">
+                        <td valign="middle" align="" class="assign_cell" width="150">
                         	<?php if(in_array($viewer->id,$acct->admins) || intval($acct->data['assign_leads'])){
                         		if(intval($tuser->id)){?>
                         			<div class='assign' id = 'assign<?=$lead['id'];?>' lead-id="<?=$lead['id'];?>" selected-text="<?=$tuser->name("F l");?>" selected-id="<?=$tuser->id;?>"></div><?php
@@ -221,11 +221,11 @@ $(function() {
         </div>
 		<div class="right" style="font-size:12px;margin:5px 0px;">
 			<?php if($acct->membership!='free'){?>
-				<a href='csv.php?<?=$_SERVER['QUERY_STRING'];?>'>Export current list to CSV</a>
+				<a href='csv.php?<?=$_SERVER['QUERY_STRING'];?>'>Export current list to CSV</a> | 
 			<?php } ?>
 			<?php $getDeleted = mysql_query("SELECT COUNT(id) FROM form_results WHERE deleted =1 AND form_id IN (SELECT id from forms where account_id={$acct->id})",$con) or die(mysql_error());
 			$deleted = mysql_fetch_array($getDeleted);
-			if(!intval($_GET['delcon']) && intval($deleted[0])){?> | <a href='index.php?delcon=1'>Show archived leads</a><?php }elseif(intval($_GET['delcon'])){ ?> | <a href='index.php'>Show active leads</a><?php } ?>
+			if(!intval($_GET['delcon']) && intval($deleted[0])){?><a href='index.php?delcon=1'>Show archived leads</a><?php }elseif(intval($_GET['delcon'])){ ?><a href='index.php'>Show active leads</a><?php } ?>
 		</div>
 		<div class="clear"></div>
 		<div class='pagination'><?=$pgl;?></div>

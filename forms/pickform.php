@@ -8,17 +8,17 @@ if(intval(mysql_num_rows($r))==1){
 	die();
 }
 if(intval(mysql_num_rows($r))==0){
-	?><div style='width:320px;heigt:240px;'>You have no forms to create a lead with.  <a href='create-form.php' target="_parent">Make one.</a></div>
+	?><div style='width:320px;heigt:240px;'>You have no forms to create a lead with.  <a href='/forms/create-form.php' target="_parent">Create one.</a></div>
 	<?php
 	die();
 }
-echo "<div style='width:240px;' id='clead_content'>";
-echo "Choose which form you wish to create the lead with:<br/>";
-echo "<select name='id' id='fselect' style='min-width:200px;'>";
+echo "<div style='width:300px;' id='clead_content'>";
+echo "<h1>Create a Lead</h1><br clear='all' /><br/>Choose a Form:<br/>";
+echo "<select style='padding:10px; height:26px; float:left; font-size:14px; min-width:200px; margin:3px;' name='id' id='fselect'>";
 while($f = mysql_fetch_array($r)){
 	$form = new Form($f['id']);
 	echo "<option value='{$form->id}'>".htmlentities($form->data['title'])."</option>";
 }
-echo "</select>\n";
-echo "<input type='submit' value='OK' onclick='$.get(\"/forms/showform.php?manual=1&id=\"+$(\"#fselect\").val(),function(data)".'{$'.".fancybox(data);});' />\n";
+echo "</select>";
+echo "<input type='submit' class='button' style='padding:5px 15px;' value='OK' onclick='$.get(\"/forms/showform.php?manual=1&id=\"+$(\"#fselect\").val(),function(data)".'{$'.".fancybox(data);});' />\n";
 echo "</div >";

@@ -14,7 +14,10 @@ while($row = mysql_fetch_array($getUsers)){
 		$actCount = 0;
 		while($act = mysql_fetch_array($getActivity)){
 			$use = new User($act['user_id']);
-			$HOME_URL="https://".$account->subdomain.".".$DOMAIN."/";
+			$url_parts = explode('.',$HOME_URL);
+			$url_parts[0] = "https://".$account->subdomain;
+			$HOME_URL = implode('.',$url_parts);
+			//$HOME_URL = str_replace('www.',$account->subdomain.".",$HOME_URL);
 			include 'wall/types.php';
 			//die(var_dump($act));
 			$post.="<table cellpadding='2' width='100%'>
@@ -36,6 +39,7 @@ while($row = mysql_fetch_array($getUsers)){
 			
 		}
 		if($actCount > 0){
+			$HOME_URL = "http://www.rainleads.com/";
 			$mailVariables = array('%homeurl','%sitename','%receiver','%url','%post','%accountname');
 			$mailValues = array($HOME_URL,$SITE_NAME,$u->name(),$HOME_URL."account/",$post,$account->title);
 			$subject = str_replace($mailVariables,$mailValues,cmsTitle('RTFemail_daily_digest'));

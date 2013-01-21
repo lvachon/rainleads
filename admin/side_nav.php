@@ -38,7 +38,6 @@
     <div>
     	<h3><a href="#">Transactions</a></h3>
         <ul class="side-nav">
-            <li onclick="document.location.href='transactions.php'"><a href="#">Transaction History</a></li>
             <li onclick="document.location.href='promo.php'"><a href="#">Promo Codes</a></li>
         </ul>
     </div>

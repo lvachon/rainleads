@@ -143,8 +143,8 @@ $style['border2']=$a[0];
 								var label_font_weight = "normal";	
 							}
 							
-							var styles = "#form_preview{background:#"+background_color+";}.form_preview_label{font-family:"+label_font+";font-size:"+label_font_size+";color:#"+label_font_color+";font-weight:"+label_font_weight+";}.form_preview_field{font-family:"+field_font+";font-size:"+field_font_size+";color:#"+field_font_color+" !important;background:#"+field_background+";border:#"+field_border_color+" solid 1px !important;}"
-							var savestyles = "#form_<?=$f->id;?>{background:#"+background_color+";width:"+pixel_width+"}.form_label{font-family:"+label_font+";font-size:"+label_font_size+";color:#"+label_font_color+";font-weight:"+label_font_weight+";}.form_field{font-family:"+field_font+";font-size:"+field_font_size+";color:#"+field_font_color+" !important;background:#"+field_background+";border:#"+field_border_color+" solid 1px !important;}"
+							var styles = "#form_preview{background:#"+background_color+";}.form_preview_label{font-family:"+label_font+";font-size:"+label_font_size+";color:#"+label_font_color+";font-weight:"+label_font_weight+";}.form_preview_field{font-family:"+field_font+";font-size:"+field_font_size+";color:#"+field_font_color+" !important;background:#"+field_background+";border:#"+field_border_color+" solid 1px!important;}"
+							var savestyles = "#form_<?=$f->id;?>{background:#"+background_color+";width:"+pixel_width+"}.form_label{font-family:"+label_font+";font-size:"+label_font_size+";color:#"+label_font_color+";font-weight:"+label_font_weight+";}.form_field{font-family:"+field_font+";font-size:"+field_font_size+";color:#"+field_font_color+" !important;background:#"+field_background+";border:#"+field_border_color+" solid 1px!important;}"
 							$('#form_preview_style').html(styles);
 							$.post("formedit.php",{"form_id":<?=$f->id;?>,"action":"edit_styles","styles":savestyles,"width":pixel_width},function(data){
 								if(data!="ok"){

@@ -46,9 +46,10 @@ if($f->account_id!=$acct->id){die("This form does not belong to the current acco
     <br/>
     <div class="tab_box vertical_tabs">
     	<div class="tab active" id="tab-code" onClick="showTab('code')">Website Embed Code</div>
-    	<div class="tab" id="tab-microsite" onClick="showTab('microsite')">Use on a Microsite</div>
-        <div class="tab" id="tab-facebook" onClick="showTab('facebook')">Add to a Facebook Page</div>
-        <div class="tab" id="tab-popup" onClick="showTab('popup')">As a Pop-up Window Link</div>
+    	<div class="tab" id="tab-microsite" onClick="document.location.href='../microsite/index.php'">Use on a Microsite</div>
+    	<?php if($account->membership!="free" && $account->membership!="lite"){?>
+        <div class="tab" id="tab-facebook" onClick="document.location.href='<?=$HOME_URL?>forms/edit-facebook.php'">Add to a Facebook Page</div>
+        <?php } ?>
     </div>
     <div class="tab_content vertical_tab_content" data-tab="code" style="font-size:14px; line-height:20px;">
 		<div id='formcode<?=$f->id;?>'>
@@ -59,11 +60,11 @@ if($f->account_id!=$acct->id){die("This form does not belong to the current acco
 			</select><br/>
 			
 			<textarea rows='10' cols='60' id='codetext'><iframe src='https://www.rainleads.com/forms/showform.php?id=<?=$f->id;?>&code=<?=urlencode($f->data['title']);?>_iframe' width='<?=max(intval($f->data['width']),400);?>' height='600' frameborder=0></iframe></textarea><br />
-			<a class="button left" href="javascript:void(0);" onClick="$.post('email-code.php?id=<?=$f->id?>',function(data){$.fancybox(data);});">Email Code</a><div class="clear"></div>
+			<a class="button left" href="javascript:void(0);" onClick="$.post('email-code.php?id=<?=$f->id?>',function(data){$.fancybox(data);});" style="margin:2px;">Email Code</a><a style="margin:2px;" onclick="document.location.href='edit-form.php?id=<?= $_GET['id'] ?>'" class="left button blue_button">Back to Settings</a><div class="clear"></div>
 		</div>
 	</div>
 	<div class="tab_content" data-tab="facebook" style="display:none;">
-		<br/><br/>
+		<br/>
 		<h3>Add a Contact Form to your Facebook Fan Page!</h3>
 		<p style="font-size:14px; margin:0px 0 15px 0;"><center>Use our exclusive Facebook app to allow your fans submit leads directly from Facebook.</center></p>
 		<center>
@@ -73,8 +74,14 @@ if($f->account_id!=$acct->id){die("This form does not belong to the current acco
 				</div>
 			</div>
 		</center>
+		<br/>
 	</div>
+	<div class="tab_content" data-tab="microsite" style="display:none;">
+		
+	</div>
+	<div class="tab_content" data-tab="popup" style="display:none;">
 	
+	</div>
 	</div>
 	<div class="clear"></div>
 </div>

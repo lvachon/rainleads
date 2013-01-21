@@ -157,6 +157,10 @@ $con = conDB();
         	pipe.draw(google.visualization.arrayToDataTable(pdata),{width:380,chartArea:{width:'100%',height:'70%'}});
 			
 		});
+		$(function() {
+		 	$("#stats-icon").attr({'src':'<?= $HOME_URL ?>img/stats-icon-on.png'});
+ 			$('#stats-tab').addClass('current');
+		});
 	</script>
 	<style>
 	.tablediv{width:700px;}
@@ -234,6 +238,8 @@ $con = conDB();
 			<div id='pipe_div' class='graphdiv''></div>
 		</div>
 	</div>
+	<Div class="clear"></DIV>
 </div>
+<?php include '../inc/footer.php'; ?>
 </body>
 </html>

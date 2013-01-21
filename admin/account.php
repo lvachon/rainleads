@@ -28,7 +28,7 @@ $account = new Account($_GET['id']);
         <br />
         <div class="ui-widget">
         	<div class="ui-state-default ui-corner-all" style="padding: 0 .7em;"> 
-				<h4><?=$account->title;?> subscription <div class="clear"></div></h4>
+				<h4><?=$account->title;?> subscription <div class="right">Subdomain:<?=$account->subdomain?></div><div class="clear"></div></h4>
                 <div class="ui-widget-content">
                 	<table>
                     	<tr>
@@ -62,11 +62,12 @@ $account = new Account($_GET['id']);
                     		<td><input type='button' value='- User' onclick='document.location.href="adjustthing.php?delta=-1&account=<?=$account->id;?>&thing=user";'/></td>
                     	</tr>
                     </table>
+                    <input type='button' value='Delete Account' onclick='if(confirm("Do you really want to delete this account, and all of its associated data?")){document.location.href="killaccount.php?id=<?=$account->id;?>";}' />
                 </div>
             </div>
         </div>
         <div class="ui-widget">
-        	<div class="ui-state-default ui-corner-all" style="padding: 0 .7em;"> 
+        	<div class="ui-state-default ui-corner-all" style="padding: 0 .7em;">
 				<h4><?=$account->title;?> info <div class="clear"></div></h4>
                 <div class="ui-widget-content">
                 	<table>
@@ -88,7 +89,9 @@ $account = new Account($_GET['id']);
                     <?php foreach($account->members as $uid){$ux = new User($uid);?>
                     	<tr>
                     		<td><?=$ux->avatar(64,64,false);?></td>
-                    		<td><a href='view-user.php?id=<?=$ux->id;?>'><?=$ux->name("F l");?></a></td>
+                    		<td><a href='view-user.php?id=<?=$ux->id;?>'><?=$ux->name("F l");?></a><br />
+                    			Last Login: <?=date('n/j/Y \a\t g:iA',$ux->data['last_login'])?>
+                    		</td>
                     	</tr>
                     <?php } ?>
                     </table>
@@ -106,7 +109,7 @@ $account = new Account($_GET['id']);
 					while($f = mysql_fetch_array($r)){
 						$form = new Form($f['id']);?>
                     	<tr>
-                    		<td><?=$form->data['title'];?></td>
+                    		<td><a href='../forms/preview.php?id=<?=$form->id;?>' rel='facebox'><?=$form->data['title'];?> (<?=$form->id;?>)</a></td>
                     		<td><?=$f['imps']?> impressions</td>
                     		<td><?=$f['subs']?> submissions</td>
                     	</tr>

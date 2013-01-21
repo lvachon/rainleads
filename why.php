@@ -35,6 +35,8 @@
             <img src="img/check.png" /> Attach proposals and other important documents with your contact<br/>
             <img src="img/check.png" /> Invite friends and business associates to use Rainleads for their business<br/>
         </center>
+        <h1><?=cmsTitle("RTFwhy_rainleads"); ?></h1>
+        <p><?=nl2br(cmsRead("RTFwhy_rainleads")); ?></p>
     </div>
     <?php include('inc/footer.php') ?>
 </body>

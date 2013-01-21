@@ -118,14 +118,16 @@ $account = $viewer->getAccount();?>
                 <hr class="title_line" style="margin-bottom:0px;" /> 
                                
                 <?php include '../inc/accountdetails.php';?>
-               <table width="100%">
+               	<table width="100%">
                     <tr>
                     	<td width="100">
-                    		<a style="width:100px;" href="<?=str_replace('http://','https://',$HOME_URL)?>account/upgrade.php" class="button green_button">Upgrade Now!</a>
+                    		<a style="width:100px;" href="<?=str_replace('http://','https://',$HOME_URL)?>account/upgrade.php" class="button green_button">Change Plan</a>
 						</td>
+						<?php if($account->membership!="free" && $account->membership!="lite"){?>
 						<td>
 							<a style="width:130px;" href="<?=str_replace('http://','https://',$HOME_URL)?>account/alacarte.php" class="button green_button">A-la-carte Upgrades</a>
                     	</td>
+                    	<?php } ?>
                     	<td align="right">
                     		<small><a style="width:140px; font-size:11px !important; padding:5px 0px !important;" href="<?=str_replace('http://','https://',$HOME_URL)?>account/cancel.php" class="button">Cancel Subscription</a></small>
                     	</td>

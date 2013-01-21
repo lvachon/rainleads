@@ -130,7 +130,7 @@ function deleteUser(id){
                         <tr>
                         	<td width="36"><div style="width:26px; height:26px; overflow:hidden; background:#eee;"><?= $user->avatar(26,0,false) ?></div></td>
                         	<td align="left" width="150"><a href="view-user.php?id=<?= $user->id ?>"><?= $user->name('F L') ?></a></td>
-                            <td><?=$account->title?></td>
+                            <td><a href="account.php?id=<?=$account->id?>"><?=$account->title?></a></td>
 							<td><?=$membership['role']?></td>
 							<td><?=date('n/j/Y',$row['datestamp']);?></td>
 							<td align="left" width="150"><?= $row['email'] ?></td>

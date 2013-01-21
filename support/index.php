@@ -1,6 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php include '../inc/trois.php'; include 'main.php';
-loginRequired(); ?>
+loginRequired(); 
+$account = $viewer->getAccount();
+if($account->data['view_support'] == '0' && !in_array($viewer->id,$account->admins)){
+	errorMsg("Access to this feature has been denied by the administrator of your account.");
+}?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<?php include '../inc/head.php'; ?>

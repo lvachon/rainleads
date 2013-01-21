@@ -3,10 +3,7 @@ $con = conDB();
 loginRequired();
 accountRequired();
 $account = new Account(verAccount());
-if($account->membership=="free" && $account->membership=="lite"){
-	errorMsg("Your account cannot create a facebook form.  Please <a href='/account/upgrade.php'>upgrade</a> your account.");
-	die();
-}
+
 $fb_token = $account->data['fb_token'];
 
 $get = mysql_query("SELECT * FROM facebook_pages WHERE account_id='{$account->id}'",$con);
@@ -32,10 +29,12 @@ $count = mysql_num_rows($get);
             <div class="clear"></div>
             <p style="font-size:14px; margin:0px 0 15px 0;">Use our exclusive Facebook app to allow your fans submit leads directly from your Facebook Fan Page.</p>
             <br/>
-            <strong>Facebook Pages Connected</strong>
-            <div class="facebook_area">            
+           
+                      
             <?php if(isset($pages)){?>
-	            <?php if($count>0){?>            
+	            <?php if($count>0){?>   
+	            <strong>Facebook Pages Connected</strong>
+	            <div class="facebook_area">           
 	            <?php
 	            	$con = conDB();
 	            	$gf = mysql_query("SELECT * from forms where account_id = {$account->id} and deleted=0 order by datestamp desc",$con);
@@ -103,9 +102,15 @@ $count = mysql_num_rows($get);
 				<?php } ?>
 			<?php }else{?>
 				<h3>Link Your Facebook and RainLeads Accounts!</h3>
-				
+				<?php
+				if($account->membership=="free" || $account->membership=="lite"){
+					$x = "document.location.href='/account/upgrade.php';";
+				}else{
+					$x="login();";
+				}
+				?>
 				<center>
-					<div onClick="login()" class="button_outside_border_blue">
+					<div onClick="<?=$x;?>" class="button_outside_border_blue">
 						<div class="button_inside_border_blue">
 							Authorize Facebook
 						</div>
@@ -124,6 +129,8 @@ $count = mysql_num_rows($get);
 			})
 		}
 	</script>
+	<div class="clear"></div>
+	</div>
     <?php include('../inc/footer.php') ?>
 </body>
 </html>

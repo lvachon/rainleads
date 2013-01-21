@@ -1,12 +1,12 @@
-<?php if(!intval($viewer->id)){?>
+<?php if(in_array($_SERVER['SCRIPT_NAME'],$LOGGED_OUT_PAGES)){?>
 <div id="header">
     <div class="inner">
         <div class="left">
-            <a href="index.php"><img src="/img/logo.png" alt="lead management software" width="275" /></a>
+            <a href="index.php"><img src="/img/logo.png" alt="lead management software" width="250" /></a>
         </div>
         <div class="right">
-            <!--<a href="<?=$sub?>index.php" class="button right">Login</a>-->
-            <a href="signup.php" class="burron right green_button">Try it FREE for 30 Days</a>
+        	<div class="phone_no" style="font-family: Georgia;font-size: 14px; color: #515151; margin-top:4px;">QUESTIONS? <i>CALL US AT 1-800-985-0058</div>
+            <a href="<?php if(strlen($sub)){echo $sub."index.php";}else{echo "javascript:($.get('findsubdomain.php',function(data){".'$.fancybox(data)}));';}?>" class="button right" style="margin-top:10px;">Login</a><a href="signup.php" class="button right green_button" style="position:relative; top:-10px;">Try it FREE for 30 Days</a>          
         </div>
         <div class="clear"></div>
     </div>
@@ -23,13 +23,14 @@
 				$msgs = mysql_fetch_array($getRequests);?>
             	<ul>
                 	<li><a href="<?=$HOME_URL?>account/" class="yellow">MY ACCOUNT</a> | </li>
-                    <li><a href="javascript:void(0)" class="yellow" onclick="if($('#help-nav').is(':hidden')){$('#help-nav').show();}else{$('#help-nav').hide();}">HELP <?php if(intval($msgs[0])){?>(<?=number_format($msgs[0])?>)<?php } ?></a> | 
+                    <li><!--<a href="javascript:void(0)" class="yellow" onclick="if($('#help-nav').is(':hidden')){$('#help-nav').show();}else{$('#help-nav').hide();}">HELP <?php if(intval($msgs[0])){?>(<?=number_format($msgs[0])?>)<?php } ?></a>| 
                     	<ul id='help-nav'>
                         	
                         	<li><a href="<?=$HOME_URL?>support/">Support</a></li>
                             
                             <li style="border-bottom:none !important;"><a href="javascript:void(0)" onclick="showFeatureTips(),$('#help-nav').hide();">Tour</a></li>
-                        </ul>	
+                        </ul>-->
+                        <a href="<?=$HOME_URL?>support/" class="yellow">SUPPORT<?php if(intval($msgs[0])){?> (<?=number_format($msgs[0])?>)<?php } ?></a>|
                     </li>
                     <li><a href="<?=$HOME_URL?>login.php?out" class="yellow">LOGOUT</a> </li>
                  </ul>

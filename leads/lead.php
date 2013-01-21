@@ -171,7 +171,7 @@ $assigned = new User($d['assigned_user']);
                         </tr>
                         <tr>
                             <td class="lead_table_label">Source:</td>
-                            <td class="lead_table_value"><?=$d['tracking_code'];?></td>
+                            <td class="lead_table_value"><?php if($d['tracking_code'] == 'fb'){ echo "Facebook"; }else{ echo $d['tracking_code']; }?></td>
                         </tr>
                         <tr>
                             <td class="lead_table_label" valign="middle">Status:</td>
@@ -282,7 +282,7 @@ $assigned = new User($d['assigned_user']);
                 	   			<?php } ?>
                 	   			<?php if(file_exists(getcwd()."/../proposals/{$prop['id']}") && strlen($prop['data'])){?>
                 	   			<tr>
-                	   				<td colspan="2"><img class="proposal_doctype" src="<?= $HOME_URL ?>img/doctypes/pdf.png" /> <a href="getfile.php?id=<?=$prop['id'];?>" target="_blank"><?=$prop['data'];?></a></td>
+                	   				<td colspan="2"><img class="proposal_doctype" src="<?= $HOME_URL ?>img/doctypes/pdf.png" /> <a href="../proposals/<?=$prop['id'];?>" target="_blank"><?=$prop['data'];?></a></td>
                 	   				
                 	   			</tr>
                 	   			<?php } ?>

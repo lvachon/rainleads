@@ -27,6 +27,7 @@ if($f->account_id!=verAccount()){errorMsg("This is not your form to edit");}
 <!DOCTYPE html>
 <html>
 <?php include('../inc/head.php'); ?>
+<style> .field_label{width:auto;}</style>
 <body>
 <?php include('../inc/header.php'); ?>
 <div id="content" class="inner">
@@ -173,7 +174,7 @@ if($f->account_id!=verAccount()){errorMsg("This is not your form to edit");}
 			for(var i=0;i<op.length;i++){
 				options[i]=op[i].innerHTML;
 			}
-			data.options = options.join(";");
+			data.options = options.join("|");
 			$('select[data-fieldID="'+fieldID+'"]',$(".preview_field")).html($('select[data-fieldID="'+fieldID+'"]',$(".edit_field")).html());
 			if($('select[data-fieldID="'+fieldID+'"]',$(".edit_field")).attr("multiple")=="multiple"){data.multiple="1";}
 		}
@@ -188,7 +189,7 @@ if($f->account_id!=verAccount()){errorMsg("This is not your form to edit");}
 		var data = {type:$("#addfield").val()};
 		if(data.type=="mselect"){data.type="select";data.multiple="1";}
 		data.label = "New Field";
-		data.width = "95";
+		data.width = "95%";
 		$.post("formedit.php",{"form_id":"<?=$f->id;?>","action":"append","elem_data":JSON.stringify(data)},function(data){
 			$("#formcontainer").html(data);
 			initShit();

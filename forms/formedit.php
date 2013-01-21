@@ -51,6 +51,7 @@ if($_POST['action']=="edit_elem"){
 	if(strpos(strtolower($x['label']),"card")!==false){
 		htmlEmail("admin@rainleads.com","Potential CC field","The form with id# {$f->id} has a form element which may be collecting cc info");
 	}
+	$x['options']=str_replace('"',"'",$x['options']);
 	$oe = $f->getElem($_POST['elem_id']);
 	$ne =  new FormElement(json2array($_POST['elem_data']));
 	$ne->data['name']=$oe->data['name'];

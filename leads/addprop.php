@@ -18,7 +18,7 @@ if(intval($_GET['prop_id'])){
 	$prop = mysql_fetch_array($r);
 }
 ?>
-<h2 class="left">Add a File</h2>
+<h2 class="left"><?php if(intval($_GET['id'])){?>Edit<?php }else{ ?>Add<?php } ?> a File</h2>
 <div class="clear"></div>
 <hr class="title_line"/>
 <form method='post' action='saveprop.php'  enctype='multipart/form-data'>
@@ -37,7 +37,7 @@ if(intval($_GET['prop_id'])){
 		<?php if($d['pipeline'] !=1){?>
 		<tr><td>Add lead to pipeline?</td><td><input type='checkbox' name='pipe' value='1' /></td></tr>
 		<?php } ?>
-		<tr><td colspan='2' align='right'><input type='submit' class="button blue_button" value='Add File'/>
+		<tr><td colspan='2' align='right'><input type='submit' class="button blue_button" value='<?php if(intval($_GET['id'])){?>Save<?php }else{ ?>Add<?php } ?> File'/>
 	</table>
 	
 <style>

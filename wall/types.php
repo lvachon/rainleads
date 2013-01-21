@@ -62,6 +62,15 @@ switch($act['type']){
 			$link = "Lead: <a class='lead-link' href='{$HOME_URL}leads/lead.php?id={$lead->id}'>{$lead->name}</a>";
 		}
 	break;
+	case 'status':
+		$action = "changed the status of a lead";
+		$getStatus = mysql_query("SELECT title FROM statuses WHERE id = {$act['aux_data']} LIMIT 1",$con);
+		$status = mysql_fetch_array($getStatus);
+		$detail = "Status: <strong>{$status['title']}</strong>";
+		$getLead = mysql_query("SELECT * FROM form_results WHERE id = {$act['lead_id']}",$con);
+		$lead = mysql_fetch_object($getLead);
+		$link = "Lead: <a class='lead-link' href='{$HOME_URL}leads/lead.php?id={$lead->id}'>{$lead->name}</a>";
+	break;
 	default:
 		$action = $act['type'].".";
 		$detail = $act['aux_data'];

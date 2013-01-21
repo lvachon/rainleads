@@ -70,6 +70,11 @@ $img = new Securimage();
 
 // see securimage.php for more options that can be set
 
+$img->image_bg_color = new Securimage_Color("#ECF6FC");
+$img->text_color = new Securimage_Color("#327192");
+$img->line_color = new Securimage_Color("#6A9CB8");
+$img->image_width = 220;
+$img->image_height = 50;
 
 
 $img->show();  // outputs the image and content headers to the browser

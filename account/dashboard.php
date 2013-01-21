@@ -77,10 +77,10 @@ function togglepipe(id){
            	$per_page=5;
            	$offset = ($page-1)*$per_page;
             if(intval($account->data['see_all_leads']) || in_array($viewer->id,$account->admins)){
-            	$qry = "form_results where length(name)>0 and length(email)>0 and form_id IN (SELECT id from forms where account_id={$account_row['id']}) {$fcon} {$filter} {$assfilter}";
+            	$qry = "form_results where length(name)>0 and length(email)>0 and form_id IN (SELECT id from forms where account_id={$account_row['id']}) {$fcon} {$filter} {$assfilter} and deleted=0";
             	$res = mysql_query("SELECT *,(SELECT user_id from assignments where result_id=form_results.id) as assigned_user,(SELECT title from statuses where id=status) as statustext,(SELECT color from statuses where id=status) as statuscolor from $qry order by {$sort} LIMIT $offset,$per_page",$con);
             }else{
-            	$qry = "form_results where length(name)>0 and length(email)>0 and id IN (SELECT result_id from assignments where user_id={$viewer->id}) {$fcon} {$filter}";
+            	$qry = "form_results where length(name)>0 and length(email)>0 and id IN (SELECT result_id from assignments where user_id={$viewer->id}) {$fcon} {$filter} and deleted=0";
             	$res = mysql_query("SELECT *,(SELECT user_id from assignments where result_id=form_results.id) as assigned_user,(SELECT title from statuses where id=status) as statustext,(SELECT color from statuses where id=status) as statuscolor from $qry order by {$sort} LIMIT $offset,$per_page",$con);
             }
             
@@ -92,7 +92,7 @@ function togglepipe(id){
             <div class="lead_row" >
                 <table width="100%" cellpadding="5" cellspacing="0">
                     <tr valign="middle">
-                    	<td onclick="document.location.href='../leads/lead.php?id=<?= $lead['id'] ?>'" valign="middle" class='id_cell' width="25" align="center"><small>#<?=$lead['id'];?></small></td> 
+                    	<td onclick="document.location.href='../leads/lead.php?id=<?= $lead['id'] ?>'" valign="middle" class='id_cell' width="25" align="center"><small>#<?=$lead['display_id'];?></small></td> 
                         <td  valign="middle" class="star_cell" width="16" align="center"><a href='javascript:void(0);' onclick='togglepipe(<?=$lead['id'];?>);' id='pipestar<?=$lead['id'];?>'><img class="tip" title="Add to Pipeline" src="<?=$HOME_URL?>img/star-icon<?php if(intval($lead['pipeline'])){echo "-on";}?>.png" /></a></td>
                         <td onclick="document.location.href='../leads/lead.php?id=<?= $lead['id'] ?>'" class="status_cell" valign="middle" align="left" width="70" >
                             <div class="status <?=$lead['statuscolor'];?>"><?=$lead['statustext'];?></div>
@@ -134,7 +134,7 @@ function togglepipe(id){
             <?php
             	$forms = array();
 				
-				$r = mysql_query("SELECT id from forms where account_id={$account->id} and deleted=0",$con);
+				$r = mysql_query("SELECT id from forms where account_id={$account->id}",$con);
 				while($a = mysql_fetch_array($r)){
 					$forms[]=$a['id'];
 				}
@@ -149,6 +149,7 @@ function togglepipe(id){
 				$totalPipes = intval($totalPipes[0]);
 				
 				$r = mysql_query("SELECT count(*) from form_impressions where form_id IN ({$forms}) and tracking_code='microsite' and datestamp>$st",$con);
+				//echo "SELECT count(*) from form_impressions where form_id IN ({$forms})  and tracking_code='microsite' and datestamp>$st";
 				$totalMS = mysql_fetch_array($r);
 				$totalMS = intval($totalMS[0]);
 				
@@ -173,8 +174,9 @@ function togglepipe(id){
 				<hr style="border-bottom:1px solid #C8C8C8;" />
                 <h1>Team Activity</h1>
                 <div class="clear"></div>
-                <?php foreach($account->members as $i){
-					$mem = new User($i);
+                <?php $getMembers = mysql_query("SELECT id FROM users WHERE id IN(SELECT user_id FROM membership WHERE account_id = {$account->id}) ORDER BY getData('last_login',data) DESC",$con); 
+                while($i = mysql_fetch_array($getMembers)){
+					$mem = new User($i['id']);
 					if(strlen($mem->data['last_login'])){
 						$logged_in = timeAgo(intval($mem->data['last_login']));
 					}else{
@@ -199,7 +201,7 @@ function togglepipe(id){
                         <div class="clear"></div>
                     </div>
                 <?php } ?>
-                
+                <br/>
                 <h1>Upcoming Events</h1>
                 <div class="clear"></div>	
 				<?php $datestamp = time(); $getEvents = mysql_query("SELECT id FROM events WHERE start_time > $datestamp AND account_id = {$account->id} ORDER BY start_time ASC LIMIT 5",$con) or die(mysql_error()); 

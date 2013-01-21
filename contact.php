@@ -5,6 +5,7 @@
 	<body>	
 		<?php include 'inc/header.php'; ?>
 		<?php include 'inc/nav.php'; ?>
+        
 		<div id="content" style="height:auto" class="inner">
 			<div id="full_width" >
 				<div class="inner">
@@ -12,6 +13,11 @@
 						<h1>Contact Us</h1>
                         <br clear="all" />
                         <br/>
+                        <?php if($_GET['msg']){?>
+						<div class="msg" style="padding:10px; border:1px solid #c0c0c0; background:#f0f0f0; margin:5px; color:#444; font-weight:bold;">
+                        	<?= ucfirst($_GET['msg']) ?>
+                        </div>
+                        <?php } ?>
 						<form method="post" action="<?= $HOME_URL ?>send-feedback.php">
 							<table width="640" cellpadding="5" style="font-size:14px; color:#555; line-height:20px;">
 								<tr>
