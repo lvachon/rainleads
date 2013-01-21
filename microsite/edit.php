@@ -3,7 +3,7 @@ loginRequired();
 $account = new Account(verAccount());
 $user = new User(verCookie());
 if($account->user_id!=$user->id){errorMsg("Only the account administrator can modify the microsite");}
-$ACCOUNTDEFAULTS = array("city_state"=>$account->data['city'].", ".$account->data['state']." ".$account->data['zip'],"address"=>$account->data['address'],"address2"=>$account->data['address2'],"tel"=>$account->data['phone']);
+$ACCOUNTDEFAULTS = array("city_state"=>$account->data['city'].", ".$account->data['state']." ".$account->data['zip'],"address"=>$account->data['address'],"address2"=>$account->data['address2'],"tel"=>$account->data['phone']);//Of course the field names aren't the same, that would make too much fucking sense.   FUCKING FUCK! THEY AREN"T EVEN THE SAME STRUCTURE, FUCK YOU!
 function Z($field){
 	global $FUCKINGDEFAULTS,$ACCOUNTDEFAULTS,$account;
 	if(strlen($account->data['MD'.$field])){return $account->data['MD'.$field];}
@@ -41,15 +41,12 @@ function Z($field){
 		</script>
 		<style>
 			.setting{
-				padding: 5px ;
-				
-			}
-			.eip_input {
-				width: 350px !important;
+				padding: 15px 0;
+				border-bottom: 1px dashed #c0c0c0;
 			}
 			.setting strong {
 				font-size: 16px;
-				margin-top:5px;
+				
 				display: block;
 			}
 			.editable {
@@ -65,18 +62,6 @@ function Z($field){
 				border: 1px solid #c0c0c0;
 				padding: 5px;
 			}
-			#content input[type=text], #content textarea{
-				border: 1px solid #c0c0c0 !important;
-				padding:6px 4px;
-				min-width: 250px;
-				outline: none !Important;
-			}
-			p {
-				color:#999 !important;
-				font-size: 13px;
-				margin:5px 0 8px 0;
-			}
-			
 		</style>
 	</head>
 	<body>
@@ -86,9 +71,9 @@ function Z($field){
 		    	<?php include('../inc/sidenav.php') ?>
 		    </div>
 		    <div id="main" class="left">
-		    	<h1>Edit Cobase vCard Details</h1>
+		    	<h1>Edit Microsite Details</h1>
 		    	<div class="clear"></div>
-		    	<p>Edit the details that will show up on your Cobase vCard.</p>
+		    	<p>Edit the details that will show up on your Microsite webpage.</p>
 		    	<br/>
 		<form id='avfrm' target="hidn" action="save.php" method="post" enctype="multipart/form-data">
 			<input type='file' name='file' id='file' onchange='$("#avfrm")[0].submit();' style='display:none;'/>
@@ -100,42 +85,26 @@ function Z($field){
 					
 				</div>
 				
-				<div class="left" style="width:300px; margin:0 10px 0 50px;">
+				<div class="left" style="height:100%; width:150px; margin-right:20px;">
 				<div class='setting'>
 					<strong>Services:</strong>
-					
 					<ul id="services">
 						<?php 
 						$cnt=0;
 						foreach(explode(",",$account->data['services']) as $service){?>
 							<li>
-								<input class="service_input" type="text" name="services[]" value="<?=htmlentities($service);?>"/>
+								<input class="service_input" name="services[]" value="<?=htmlentities($service);?>"/>
 							</li>
 						<?php } ?>
 						<li>
-							<a href='javascript:void();' class="button left" style="margin:5px 2px;" onclick='ohtml = $(this).parent().html();$(this).parent().html("<input class=\"service_input\" type=\"text\" name=\"services[]\"/>");$("#services").append("<li>"+ohtml+"</li>");'/>Add Service</a>
+							<a href='javascript:void();' onclick='ohtml = $(this).parent().html();$(this).parent().html("<input class=\"service_input\" name=\"services[]\"/>");$("#services").append("<li>"+ohtml+"</li>");'/>Add service</a>
 						</li>
 					</ul>
 				</div>
 				</div>
-				<div class="left" style="width:350px;">
+				<div class="left" style="width:500px;">
 				<div class='setting'>
-					<strong>Company Info:</strong>
-					<span class='editable'>
-						<label data-type="editable" data-for="input#hours" data-field="hours">
-							<div class="label">Company Name:</div>
-							<input class="eip_input" style="font-size:18px; padding:4px;" name="company" id="company" value="<?=Z("company");?>"/>
-						</label>
-					</span>
-					<span class="editable">
-						<label data-type="editable" data-for="textarea#desc" data-field="desc">
-							<div class="label">Description:</div>
-							<textarea class="eip_input" name="desc" id="desc" style="width:350px; margin-left:2px;" rows="4"><?=Z("desc");?></textarea>
-						</label>
-					</span>
-				</div>
-				<div class='setting'>
-					<strong>Address:</strong>
+					<strong>Address:</strong><br/>
 					<span class="editable">
 						<label data-type="editable" data-for="input#address" data-field="address">
 							<div class="label">Address:</div>
@@ -157,7 +126,7 @@ function Z($field){
 					
 				</div>
 				<div class='setting'>
-					<strong>Contact Info:</strong>
+					<strong>Contact Info:</strong><br/>
 					<span class="editable">
 						<label data-type="editable" data-for="input#tel" data-field="tel">
 							<div class="label">Telephone:</div>
@@ -173,7 +142,7 @@ function Z($field){
 					<span class="editable">
 						<label data-type="editable" data-for="input#email" data-field="email">
 							<div class="label">Email:</div>
-							<input class="eip_input" name="email" id="email" placeholder="http://" value="<?=Z("email");?>"/>
+							<input class="eip_input" name="email" id="email" value="<?=Z("email");?>"/>
 						</label>
 					</span>					
 					<span class="editable">
@@ -190,11 +159,25 @@ function Z($field){
 					</span>
 				</div>
 				
+				<div class='setting'>
+					<strong>Company Info:</strong><br/>
+					<span class='editable'>
+						<label data-type="editable" data-for="input#hours" data-field="hours">
+							<div class="label">Company Name:</div>
+							<input class="eip_input" style="font-size:18px; padding:4px;" name="company" id="company" value="<?=Z("company");?>"/>
+						</label>
+					</span>
+					<span class="editable">
+						<label data-type="editable" data-for="textarea#desc" data-field="desc">
+							<div class="label">Description:</div>
+							<textarea class="eip_input" name="desc" id="desc" style="width:594px; margin-left:2px;" rows="4"><?=Z("desc");?></textarea>
+						</label>
+					</span>
+				</div>
+				<br/>
 				</div>
 				<div class="clear"></div>
-				<input class="button blue_button right" type='submit' value='Save' style="margin-right:65px;"/>
-				<input type='button' class="button right" value='Preview' onclick='window.open("http://www.coba.se/<?=$account->data['microsite_url'];?>");'/>
-				<div class="clear"></div>
+				<input type='submit' value='Save'/><input type='button' value='Preview' onclick='window.open("http://www.coba.se/<?=$account->data['microsite_url'];?>");'/>
 			</div>
 			<div class="clear"></div>
 			

@@ -12,59 +12,12 @@ if(!$year){$year=date("Y",time());}
 if( ($year %4 == 0) && (($year %100 != 0) || ($year %400 == 0)) ){ $molength[2]++; } //Leap year (G.D. Julian Calendar)
 $numEvents = 0; 
 $target ="&id={$user->id}";
-$account = $viewer->getAccount();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<?php include '../inc/head.php'; ?>
-     <script src='/js/ddslick.js'></script>
-	<script>
-          
-        var assignData = [
-            <?php 
-                $cnt=0;
-				 echo "{text: \""."All Members"."\",value:0,imageSrc:'$HOME_URLavatar/d.jpg}',selected:";
-				if(!intval($_GET['user'])){echo "true";}else{echo "false";}
-				echo "}";
-				$cnt++;
-                foreach($account->members as $u){
-                    $user = new User($u);
-                    echo ",\n";
-                    $cnt++;
-                    echo "{text: \"".$user->name("F L")."\",value:{$user->id},imageSrc:'{$user->avatarSrc()}',selected:";
-                    if($_GET['user'] == $user->id){echo "true";}else{echo "false";}
-                    echo "}";
-                }
-            ?>
-        ];
-        var assignText = "Filter By User";
-        var glbl;
-        function init(){
-            $('#assign').ddslick({
-                data:assignData,
-                width: 170,
-                imagePosition: "left",
-                selectText: assignText,
-                onSelected: function (data) {
-					if(data.selectedData.value != <?=intval($_GET['user'])?>){
-						if(data.selectedData.value == 0){
-							document.location="<?=$HOME_URL?>events/calendar.php";
-						}else{
-                    		document.location="<?=$HOME_URL?>events/calendar.php?user="+data.selectedData.value;
-						}
-					}
-				}
-                });
-        }
-    
-        $(function() {
-			init();
-			$('.dd-option-image').css( "background-size", "cover" );
-		});
-        
-    </script>
-	<style>
+    <style>
 		.calendar { border-collapse: separate; border-spacing: 1px; }
 		.upper { background: #5c5c5c; color: #fff; }
 		.daylabel { font-family: Georgia, "Times New Roman", Times, serif; font-size: 14px; color: #2d2d2d; }
@@ -130,7 +83,7 @@ $account = $viewer->getAccount();
 			top: -15px;
 		}
     </style>
-   
+    
 </head>
 <body>
     <div id="wrap">
@@ -142,15 +95,15 @@ $account = $viewer->getAccount();
             </div>
             <div class="right" id="main">
                 <div style="border: 1px solid #d7d7d7; padding: 12px 18px; margin-bottom: 10px;">
-                    <h1 class="left no-bold" style="margin-top: 4px;">CALENDAR</h1><div class="right"><?php if(in_array($viewer->id,$account->admins)){?><div id="assign"></div><?php } ?></div>
+                    <h1 class="left no-bold" style="margin-top: 4px;">CALENDAR</h1>
                     <input type="hidden" id="daychosen" name="daychosen" value="<?=$day?>" />
                     <div class="right">
                     	<div class="left" id="assfilter"></div>
-                    	<?php if($viewer->getAccount()->membership=="basic" || $viewer->getAccount()->membership=="pro" || $viewer->getAccount()->membership=="free"){?>
+                    	<?php if($viewer->getAccount()->membership=="basic" || $viewer->getAccount()->membership=="pro"){?>
 	                        <a href="javascript:void(0);" onclick="$.post('request.php',function(data){$.fancybox(data);});" class="button blue_button left" style="padding: 8px 14px; margin-right:5px;">Export Calendar</a>        
 	                        <a href="javascript:void(0);" onclick="$.post('upload-pop.php',function(data){$.fancybox(data);});" class="button blue_button left" style="padding: 8px 14px;">Create Event</a>
 	                    <?php }else{ ?> 
-	                    	<div class="right">Your account is unable to create or export events.  Please <?php if($viewer->id == $account->user_id){?><a href="../account/upgrade.php"><?php } ?>upgrade<?php if($viewer->id == $account->user_id){?></a><?php } ?> your account.</div>
+	                    	Your account is unable to create or export events.  Please <a href='/account/upgrade.php'>upgrade</a> your account.
 	                    <?php } ?>
                     </div>
                     <div class="clear"></div>

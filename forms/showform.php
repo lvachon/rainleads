@@ -10,6 +10,6 @@ if(!isset($_GET['manual'])){
 echo mysql_error();
 }
 ?>
-<style>.reqmissing{border:solid 1px #D64A4A;}.form_field{padding:4px;}</style>
-<?php if(!intval($_GET['manual'])){?><script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script><?php } ?>
+<style>.reqmissing{border:solid 1px #D64A4A;}</style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script><?=$form->getValidationJS();?></script>

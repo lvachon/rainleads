@@ -16,7 +16,7 @@ function attrs($array){
 				$val.=";width:{$array['width']};";
 			}
 			if($key=="name" && isset($array['multiple'])){$val.='[]';}
-			$html .= " $key=\"".($val)."\"";
+			$html .= " $key=\"".htmlentities($val)."\"";
 		}
 	}
 	return $html;
@@ -35,15 +35,14 @@ class FormElement {
 	public $html="";
 	public $uid="";
 	public $label="";
-	
 	function FormElement($data){
 		global $CURRENT_FORM_IDS;
 		if(strlen($data['type'])){
 			$this->uid = strval(count($CURRENT_FORM_IDS));
 			$this->type = $data['type'];
 			$this->data = $data;
-			if(!intval(substr($this->data['width'],0,2))){
-				$this->data['width']="95%";
+			if(!intval($this->data['width'])){
+				$this->data['width']="95";
 			}
 			if(!strlen($this->data['class'])){
 				$this->data['class']="form_field";
@@ -99,41 +98,41 @@ class FormElement {
 				if(!$this->data['multiple']){
 					$html .= "<select data-fieldid='{$this->uid}'".attrs($this->data).">\n";
 					for($i=0;$i<count($this->options);$i++){
-						$html.= "	<option data-optionID='{$i}' value=\"".($this->options[$i])."\"";
+						$html.= "	<option data-optionID='{$i}' value=\"".htmlentities($this->options[$i])."\"";
 						if($this->selected[0]==$i){
 							$html .= " selected";
 						}
-						$html.= ">".($this->options[$i])."</option>\n";
+						$html.= ">".htmlentities($this->options[$i])."</option>\n";
 					}
 					$html .= "</select>";
 				}else{
 					$html .= "<select data-fieldid='{$this->uid}'".attrs($this->data)." multiple>\n";
 					for($i=0;$i<count($this->options);$i++){
-						$html.= "	<option data-optionID='{$i}' value=\"".($this->options[$i])."\"";
+						$html.= "	<option data-optionID='{$i}' value=\"".htmlentities($this->options[$i])."\"";
 						if(in_array($i,$this->selected)){
 							$html .= " selected";
 						}
-						$html.= ">".($this->options[$i])."</option>\n";
+						$html.= ">".htmlentities($this->options[$i])."</option>\n";
 					}
 					$html .= "</select>";
 				}
 				break;
 			case "check":
 				for($i=0;$i<count($this->options);$i++){
-					$html.= "	<label><input type='checkbox' value=\"".($this->options[$i])."\" ".attrs($this->data);
+					$html.= "	<label><input type='checkbox' value=\"".htmlentities($this->options[$i])."\" ".attrs($this->data);
 					if(in_array($i,$this->selected)){
 						$html .= " checked";
 					}
-					$html.= "/>".($this->options[$i])."</label>\n";
+					$html.= "/>".htmlentities($this->options[$i])."</label>\n";
 				}
 				break;
 			case "radio":
 				for($i=0;$i<count($this->options);$i++){
-					$html.= "	<label><input type='radio' value=\"".($this->options[$i])."\" ".attrs($this->data);
+					$html.= "	<label><input type='radio' value=\"".htmlentities($this->options[$i])."\" ".attrs($this->data);
 					if($i==$this->selected[0]){
 						$html .= " checked";
 					}
-					$html.= "/>".($this->options[$i])."</label>\n";
+					$html.= "/>".htmlentities($this->options[$i])."</label>\n";
 				}
 				break;
 			case "date":
@@ -152,7 +151,7 @@ class FormElement {
 				$html = "<input data-field-id='{$this->uid}' type='text' value=\"".htmlentities($this->value)."\"". attrs($this->data)."/>";
 				break;
 			case "textarea":
-				$html = "<textarea data-field-id='{$this->uid}' ". attrs($this->data)." >".($this->value)."</textarea>";
+				$html = "<textarea data-field-id='{$this->uid}' ". attrs($this->data)." >".htmlentities($this->value)."</textarea>";
 				break;
 			case "select":
 				if(!$this->data['multiple']){
@@ -162,7 +161,7 @@ class FormElement {
 						if($this->selected[0]==$i){
 							$html .= " selected";
 						}
-						$html.= ">".($this->options[$i])."</option>\n";
+						$html.= ">".htmlentities($this->options[$i])."</option>\n";
 					}
 					$html .= "</select>";
 				}else{
@@ -172,7 +171,7 @@ class FormElement {
 						if(in_array($i,$this->selected)){
 							$html .= " selected";
 						}
-						$html.= ">".($this->options[$i])."</option>\n";
+						$html.= ">".htmlentities($this->options[$i])."</option>\n";
 					}
 					$html .= "</select>";
 				}
@@ -183,7 +182,7 @@ class FormElement {
 					if(in_array($i,$this->selected)){
 						$html .= " checked";
 					}
-					$html.= "/>".($this->options[$i])."</label>\n";
+					$html.= "/>".htmlentities($this->options[$i])."</label>\n";
 				}
 				break;
 			case "radio":
@@ -192,7 +191,7 @@ class FormElement {
 					if($i==$this->selected[0]){
 						$html .= " checked";
 					}
-					$html.= "/>".($this->options[$i])."</label>\n";
+					$html.= "/>".htmlentities($this->options[$i])."</label>\n";
 				}
 				break;
 			case "date":
@@ -291,9 +290,9 @@ class FormElement {
 	}	
 	
 	function initCheck(){
-		$this->options = explode("|",$this->data['options']);
+		$this->options = explode(";",$this->data['options']);
 		$this->selected=array(-1);
-		$vals = explode("|",$this->value);
+		$vals = explode(";",$this->value);
 		for($i=0;$i<count($this->options);$i++){
 			foreach($vals as $val){
 				if($this->options[$i]==$val){
@@ -304,7 +303,7 @@ class FormElement {
 		}
 	}
 	function initRadio(){
-		$this->options = explode("|",$this->data['options']);
+		$this->options = explode(";",$this->data['options']);
 		$this->selected=array(-1);
 		for($i=0;$i<count($this->options);$i++){
 			if($this->options[$i]==$this->value){
@@ -323,7 +322,6 @@ class Form{
 	public $account_id=0;
 	public $datestamp=0;
 	public $thankyou="";
-	public $deleted = 0;
 	
 	function Form($data){
 		global $CURRENT_FORM_IDS, $HOME_URL;
@@ -347,7 +345,6 @@ class Form{
 				$this->datestamp = intval($f['datestamp']);
 				$this->account_id = intval($f['account_id']);
 				$this->thankyou = $f['thankyou'];
-				$this->deleted = intval($f['deleted']);
 				foreach($this->elems as $elem){
 					$CURRENT_FORM_IDS[]=$elem->uid;
 					foreach($elem->elems as $e){
@@ -423,10 +420,6 @@ class Form{
 	
 	function getHTML($preview = false,$tracking_code="",$manual=false){
 		global $HOME_URL;
-		if($this->deleted == 1){
-			$html = "Form Not Active";
-			return $html;
-		}
 		$html = "<style>{$this->data['styles']}</style>\n";
 		if(!$preview){
 			$html .= "<form id = 'form_{$this->id}' ".attrs($this->data)."  >\n";
@@ -436,15 +429,15 @@ class Form{
 		if(strlen($tracking_code)){$html .= "<input type='hidden' name='tracking_code' value=\"".htmlentities($tracking_code)."\"/>\n";}
 		$html .= "<input type='hidden' name='form_id' value='{$this->id}'/>\n";
 		$html .= "<input type='hidden' name='form_data' value=\"".base64_encode(gzcompress(serialize($this->elems)))."\"/>\n";
-		$html .= "<table style='width:100%;'";
+		$html .= "<table>";
 		foreach($this->elems as $row){
 			$html .= "<tr><td class='form_label'>".htmlentities($row->label)."</td></tr>\n";
 			$html .= "<tr><td id='form_row_{$row->uid}'>".$row->getHTML()."</td></tr>\n";
 		}
-		/*($manual){
+		if($manual){
 			$html .= "<tr><td class='form_label'>Referer</td></tr>\n";
 			$html .= "<tr><td id='form_row_{$row->uid}'><input type='text' name='referer'/></td></tr>\n";
-		*/
+		}
 		if(!$manual && false){
 			//CAPTCHA
 			$html .= "<tr><td colspan=\"4\" align=\"center\">\n";
@@ -460,9 +453,8 @@ class Form{
 			$html .= "	</div>\n";
 			$html .= "</td></tr>\n";
 		}
-		if(!$preview){$html .= "<tr><td colspan='2' align='center'><input type='button' value='Submit' onclick='if(rainleads_checkForm())".'{$'."(\"#form_{$this->id}\")[0].submit();}'/></td></tr>\n";}
+		if(!$preview){$html .= "<tr><td colspan='2'><input type='button' value='Submit' onclick='if(rainleads_checkForm())".'{$'."(\"#form_{$this->id}\")[0].submit();}'/></td></tr>\n";}
 		$html .= "</table>\n</form>";
-	
 		return $html;
 	}
 	
@@ -525,7 +517,7 @@ class Form{
 	}
 	
 	function getEditHTML(){
-		$DEFREQ = array("name","email","about");
+		$DEFREQ = array("name","email","phone","about");
 		$html = "<ul id=\"form_fields\">";
 		foreach($this->elems as $row){
 			$html .= "<li class='form_field' id='{$row->uid}' draggable='true'>\n";
@@ -555,7 +547,7 @@ class Form{
 				for($i=0;$i<count($row->options);$i++){
 	                $html .= "	<div class=\"edit_select_option\" data-optionid=\"{$i}\">\n";
 	                $html .= "		<span class=\"edit_label\">Option Label</span><br>\n";
-	                $html .= "		<input type=\"text\" value=\"".str_replace('"','&quot;',$row->options[$i])."\" class=\"edit\" onkeyup=\"optionLabel({$row->uid},{$i},$(this).val())\">\n";
+	                $html .= "		<input type=\"text\" value=\"".htmlentities($row->options[$i])."\" class=\"edit\" onkeyup=\"optionLabel({$row->uid},{$i},$(this).val())\">\n";
 	                if($i>0){$html .=" <img src=\"/img/field-delete-icon.png\" onclick=\"removeSelectOption('{$row->uid}','{$i}')\" />\n";}                                                                
 	                $html .= "	</div>\n";
 				}

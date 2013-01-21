@@ -3,18 +3,13 @@ loginRequired();
 session_start();
 $timezone = $_SESSION['time'];
 date_default_timezone_set($timezone);
-if($viewer->id == $account->user_id){
-	$link_msg = "<a href='../account/upgrade.php'>upgrade</a>";
-}else{
-	$link_msg = "upgrade";
-}
-if($viewer->getAccount()->membership!="basic" && $viewer->getAccount()->membership!="pro" && $viewer->getAccount()->membership!="free"){echo("Your account is unable to create or export events.  Please {$link_msg} your account.");die();}
+if($viewer->getAccount()->membership!="basic" && $viewer->getAccount()->membership!="pro"){echo("Your account is unable to create or export events.  Please <a href='/account/upgrade.php'>upgrade</a> your account.");die();}
 if(intval($_GET['id'])){
 	$event = new Event(intval($_GET['id'])); 
 }?>
 <h3><?php if(intval($_GET['id'])){?>Edit<?php }else{?>Create<?php } ?> An Event</h3>
 <hr />
-<form method="post" action="<?=$HOME_URL?>events/save.php" enctype="multipart/form-data">
+<form method="post" action="save.php" enctype="multipart/form-data">
 	<?php if(intval($event->id)){?>
 		<input type="hidden" name="id" value="<?=$event->id?>" />
 	<?php } ?>

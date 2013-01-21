@@ -5,7 +5,6 @@ $user = new User(verCookie());
 if($account->user_id!=$user->id){errorMsg("Only the account administrator can modify the microsite");}
 $forms = mysql_query("SELECT * from forms where account_id = {$account->id} and deleted=0 order by datestamp desc",$con);
 ?>
-<!DOCTYPE html>
 <html>
 <?php include('../inc/head.php'); ?>
 <style>
@@ -23,7 +22,7 @@ $forms = mysql_query("SELECT * from forms where account_id = {$account->id} and 
 		border: 1px solid #c0c0c0;
 		background: #f0f0f0;
 		padding: 0px 0 0 5px;
-		
+		height: 26px;
 		line-height: 24px;
 		font-size: 13px;
 		color:#999;
@@ -57,18 +56,18 @@ $(function() {
     	<?php include('../inc/sidenav.php') ?>
     </div>
     <div id="main" class="left">
-    	<h1>Manage your Cobase vCard</h1>
+    	<h1>Manage your Microsite</h1>
     	<div class="clear"></div>
-    	<p class="caption">Your RainLeads Cobase vCard is a simple one page website where you can feature your business information and a custom form of your choice to help you generate more leads! Set up takes only a few moments.</p>
+    	<p class="caption">Your RainLeads microsite is a simple one page website where you can feature your business information and a custom form of your choice to help you generate more leads! Set up takes only a few moments.</p>
     	<br/>
     	<?php if($account->membership!="pro" && false){?>
 	    	<!-- If the account is not pro -->
-	    	<div class="message"><span>Your Cobase vCard will not become available to the public without a pro subscription.</span> <a class="button green_button" style="width:120px; margin:auto;" href="#">Upgrade Now</a></div>
+	    	<div class="message"><span>Your microsite will not become available to the public without a pro subscription.</span> <a class="button green_button" style="width:120px; margin:auto;" href="#">Upgrade Now</a></div>
 	    	<br/>
 	    <?php }else{
 	    	if(!intval(mysql_num_rows($forms))){?>
 		    	<!-- If the account has no forms -->
-		    	<div class="message"><span>Before you generate your Cobase vCard</span> <a class="button blue_button" style="width:120px; margin:auto;" href="<?= $HOME_URL ?>forms/">Create a Form</a></div>
+		    	<div class="message"><span>Before you generate your microsite</span> <a class="button blue_button" style="width:120px; margin:auto;" href="<?= $HOME_URL ?>forms/">Create a Form</a></div>
 		    	<div class="clear"></div>
 		    	<br/>
 	    	<?php }else{ ?>
@@ -82,12 +81,12 @@ $(function() {
 				    		<?php while($row = mysql_fetch_array($forms)){
 				    			$form = new Form($row['id']);
 				    		?>
-				    			<option value="<?= $form->id ?>" selected="<?php if($account->data['microsite_form']==$row['id']){echo "selected";}?>"><?=$form->data['title'];?></option>
+				    			<option value="<?= $form->id ?>" <?php if($account->data['microsite_form']==$row['id']){echo "selected";}?>><?=$form->data['title'];?></option>
 				    		<?php } ?>
 				    	</select>
 			    	</div>
 			    	<div class="right" style="width:350px; padding-top:8px; line-height:16px;">
-			    		<span class="small">This is the form that will be embedded on your Cobase vCard, and will be what visitors to the site will interact with.</span>
+			    		<span class="small">This is the form that will be embedded on your Microsite, and will be what visitors to the site will interact with.</span>
 			    	</div>
 			    	<div class="clear"></div>
 		    	</div>
@@ -120,20 +119,20 @@ $(function() {
 		    	</div>
 		    	<div class="setting">
 			    	<div class="left" style="width:350px;">
-				    	<span class="strong">Edit your Cobase vCard:</span>
-				    	<a class="button left" href='edit.php' >Edit Details</a><span style="position:relative; color:#777; top:9px; font-size:13px;">Last edited <?= timeAgo(intval($account->data['MDlast_saved'])) ?></span><div class="clear"></div>
+				    	<span class="strong">Edit your Microsite:</span>
+				    	<a class="button left" href='edit.php' >Edit Details</a><span style="position:relative; color:#777; top:9px; font-size:13px;">Last edited <?= timeAgo(intval($account->data['MDlastedit'])) ?></span><div class="clear"></div>
 			    	</div>
 			    	<div class="right" style="width:350px; padding-top:8px; line-height:16px;">
-			    		<span class="small">Edit the company description, services, address and contact information that appears on the Cobase vCard</span>
+			    		<span class="small">Edit the company description, services, address and contact information that appears on the Microsite</span>
 			    	</div>
 			    	<div class="clear"></div>
 		    	</div>
 		    	
 		    	<table width='100%'>
 		    		<tr><td width='50%' align='center'>
-		    			<div class="button blue_button" style="width:120px; margin-top:15px;" onclick='$("#frm")[0].submit();'>Save Cobase vCard</div>
+		    			<div class="button blue_button" style="width:100px; margin-top:15px;" onclick='$("#frm")[0].submit();'>Save Microsite</div>
 		    		</td><td width='50%' align='center'>
-		    			<div class="button blue_button" style="width:130px; margin-top:15px;" onclick='document.location.href="http://www.coba.se/<?=$account->data['microsite_url'];?>";'>View Cobase vCard</div>
+		    			<div class="button blue_button" style="width:100px; margin-top:15px;" onclick='document.location.href="http://www.coba.se/<?=$account->data['microsite_url'];?>";'>View Microsite</div>
 		    		</td></tr>
 				</table>	    	
 		    	</form>
@@ -142,24 +141,24 @@ $(function() {
 		    	<div class="tab_content" style="border-top:1px solid #c8c8c8; min-height:0px; padding-top:5px;">
 		    	<div class="setting">
 			    	<div class="left" style="width:350px;">
-				    	<span class="strong">Share your Cobase vCard:</span>
-				    	<a href="http://www.facebook.com/sharer.php?u=http://coba.se/<?=htmlentities($account->data['microsite_url']);?>" onClick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=270,width=600');return false;" class="button left" style="padding:5px 5px 3px 5px; text-shadow:#fff 0 1px 0;" target="_blank">
+				    	<span class="strong">Share your Microsite:</span>
+				    	<a href="http://www.facebook.com/sharer.php?u=http://coba.se/<?=htmlentities($account->data['microsite_url']);?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=270,width=600');return false;" class="button left" style="padding:5px 5px 3px 5px; text-shadow:#fff 0 1px 0;" target="_blank">
 				    		<img src="../img/icons/facebook.png" /><span style="position:relative; top:-3px;"> Facebook</span>
 				    	</a>
-				    	<a href="https://twitter.com/intent/tweet?url=http://coba.se/<?=htmlentities($account->data['microsite_url']);?>" onClick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=257,width=600');return false;" class="button left" style="padding:5px 5px 3px 5px; text-shadow:#fff 0 1px 0;" target="_blank">
+				    	<a href="https://twitter.com/intent/tweet?url=http://coba.se/<?=htmlentities($account->data['microsite_url']);?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=257,width=600');return false;" class="button left" style="padding:5px 5px 3px 5px; text-shadow:#fff 0 1px 0;" target="_blank">
 				    		<img src="../img/icons/twitter.png" /><span style="position:relative; top:-3px;"> Twitter</span>
 				    	</a>
-				    	<a  href="https://plus.google.com/share?url=http://coba.se/<?=htmlentities($account->data['microsite_url']);?>" class="button left" style="padding:5px 5px 3px 5px; text-shadow:#fff 0 1px 0;" onClick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" target="_blank">
+				    	<a  href="https://plus.google.com/share?url=http://coba.se/<?=htmlentities($account->data['microsite_url']);?>" class="button left" style="padding:5px 5px 3px 5px; text-shadow:#fff 0 1px 0;" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" target="_blank">
 				    		<img src="../img/icons/google.png" /><span style="position:relative; top:-3px;"> Google+</span>
 				    	</a>
 			    	</div>
 			    	<div class="right" style="width:350px; padding-top:8px; line-height:16px;">
-			    		<span class="small">Share your Cobase vCard! You want as many potential clients to see this Cobase vCard as possible. Share, like, tweet, get it out there!</span>
+			    		<span class="small">Share your Microsite! You want as many potential clients to see this microsite as possible. Share, like, tweet, get it out there!</span>
 			    	</div>
 			    	<div class="clear"></div>
 		    	</div>
 		    	<div class="setting">
-			    	<span class="strong">Total Cobase vCard Impressions:</span>
+			    	<span class="strong">Total Microsite Impressions:</span>
 			    	<?php
 			    	if(strlen($_GET['time_start'])){
 						$time_start = intval($_GET['time_start']);

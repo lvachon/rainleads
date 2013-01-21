@@ -14,7 +14,6 @@ if(strlen($_POST['url']) && intval($_POST['form'])){
 	if(intval($dupe[0])>0){errorMsg("This url has already been claimed");die();}
 	$account->data['microsite_url']=$url;
 	$account->data['microsite_form']=strval($form);
-	$account->data['MDlast_saved']=strval(time());
 	$account->save();
 	header("Location: index.php");
 	die();
@@ -33,7 +32,6 @@ if($_POST['services']){
 	$account->data['MDhours']=$_POST['hours'];
 	$account->data['MDcompany']=$_POST['company'];
 	$account->data['MDdesc']=$_POST['desc'];
-	$account->data['MDlast_saved']=strval(time());
 	$account->save();
 	header("Location: edit.php");
 	die();

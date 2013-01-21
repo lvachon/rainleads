@@ -167,10 +167,6 @@ $con = conDB();
 			
 			
 		});
-		$(function() {
-		 	$("#stats-icon").attr({'src':'<?= $HOME_URL ?>img/stats-icon-on.png'});
- 			$('#stats-tab').addClass('current');
-		});
 	</script>
 	<style>
 	.graphdiv{

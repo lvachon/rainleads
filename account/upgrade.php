@@ -91,7 +91,7 @@ if($viewer->id!=$account->user_id){errorMsg("Only the account owner can change t
 					<?php foreach($SUB_PLANS as $p){
 						if($p['name']=="free" || $p['name']==$account->plandata['name']){continue;}
 						$norad=false;
-						if($p['price']<$account->plandata['price'] || true){
+						if($p['price']<$account->plandata['price']){
 							$con = conDB();
 							$r = mysql_query("SELECT count(*) from forms where account_id={$account->id} and deleted = 0",$con);
 							$fc = mysql_fetch_array($r);

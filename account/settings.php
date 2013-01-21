@@ -130,8 +130,6 @@ if($viewer->id != $account->user_id){
                     <li><label><input type="checkbox" name="set_statuses" id="set_statuses" <?php if($account->data['set_statuses'] != '0'){?> checked="checked"<?php } ?> value="1" onChange="changeData('set_statuses',$(this).val());"> Allow Team Members to Set Lead Statuses</label></li>
                     <li><label><input type="checkbox" name="add_forms" id="add_forms" <?php if(intval($account->data['add_forms'])){?> checked="checked"<?php } ?> value="1" onChange="changeData('add_forms',$(this).val());"> Allow Team Members to Edit or Create Forms</label></li>
                     <li><label><input type="checkbox" name="view_stats" id="view_stats" <?php if($account->data['view_stats'] != '0'){?> checked="checked"<?php } ?> value="1" onChange="changeData('view_stats',$(this).val());"> Allow Team Members to View Statistics</label></li>
-                    <li><label><input type="checkbox" name="view_support" id="view_support" <?php if($account->data['view_support'] != '0'){?> checked="checked"<?php } ?> value="1" onChange="changeData('view_support',$(this).val());"> Allow Team Members to Access Support</label></li>
-                
                 </ul>
             <br/>
             <h2 class="left">Team</h2>
@@ -153,10 +151,6 @@ if($viewer->id != $account->user_id){
                                     echo "Team Member";
                                 }
                             }?>
-                            <br />
-                            <?php if($mem->id != $account->user_id){?>
-                            	<a href="javascript:void(0);" onclick="$.post('deleteUser.php',{'id':<?=$mem->id?>},function(data){$.fancybox(data);});" class="right">delete</a><br class="clear" />
-                        	<?php } ?>
                         </small>
                     </div>
                     <div class="clear"></div>
