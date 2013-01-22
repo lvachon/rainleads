@@ -8,7 +8,6 @@ if($viewer->id == $account->user_id){
 }else{
 	$link_msg = "upgrade";
 }
-if($viewer->getAccount()->membership!="basic" && $viewer->getAccount()->membership!="pro" && $viewer->getAccount()->membership!="free"){echo("Your account is unable to create or export events.  Please {$link_msg} your account.");die();}
 if(intval($_GET['id'])){
 	$event = new Event(intval($_GET['id'])); 
 }?>

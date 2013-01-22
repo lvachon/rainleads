@@ -47,9 +47,7 @@ if($f->account_id!=$acct->id){die("This form does not belong to the current acco
     <div class="tab_box vertical_tabs">
     	<div class="tab active" id="tab-code" onClick="showTab('code')">Website Embed Code</div>
     	<div class="tab" id="tab-microsite" onClick="document.location.href='../microsite/index.php'">Use on a Microsite</div>
-    	<?php if($account->membership!="free" && $account->membership!="lite"){?>
         <div class="tab" id="tab-facebook" onClick="document.location.href='<?=$HOME_URL?>forms/edit-facebook.php'">Add to a Facebook Page</div>
-        <?php } ?>
     </div>
     <div class="tab_content vertical_tab_content" data-tab="code" style="font-size:14px; line-height:20px;">
 		<div id='formcode<?=$f->id;?>'>

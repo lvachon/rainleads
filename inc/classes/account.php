@@ -31,13 +31,12 @@
 	}
 	
 	function formLimit(){
-		return $this->plandata['forms'];
+		return PHP_INT_MAX;
 	}
 	
 	function storageLimit(){
 		global $SUB_PLANS;
 		$limit = 0;
-		$limit+= $this->plandata['storage']*1024*1024;//bytes
 		$con = conDB();
 		$r = mysql_query("SELECT count(*) from transactions where type='add_storage' and account_id={$this->id}",$con);
 		$add = mysql_fetch_array($r);
@@ -52,7 +51,6 @@
 	function userLimit(){
 		global $SUB_PLANS;
 		$limit = 0;
-		$limit+= $this->plandata['users'];
 		$con = conDB();
 		$r = mysql_query("SELECT count(*) from transactions where type='add_user' and account_id={$this->id}",$con);
 		$add = mysql_fetch_array($r);
@@ -80,11 +78,8 @@
 		$this->membership = $u['plantype'];
 		$this->sub_id = $u['sub_id'];
 		$this->mo_price = intval($u['mo_price']);
-		foreach($SUB_PLANS as $plan){
-			if($plan['name']==$this->membership){
-				$this->plandata = $plan;
-			}
-		}
+		$r = mysql_query("SELECT count(*) from transactions where account_id={$this->id} and type=('sub_create')",$con);
+		$a = mysql_fetch_array($r);
 		
 		$getMembers = mysql_query("SELECT * FROM membership WHERE account_id = {$this->id}",$con);
 		while($m = mysql_fetch_array($getMembers)){

@@ -165,10 +165,6 @@ input[type=text] {
 			<div class="clear"></div>
 		</td>
 	</tr>
-	<?php if(($account->membership=="free" && $account->expiration>0)||!$account->id){?>
-	<tr><td>Promo Code:</td></tr><tr><td><input type='text' name='promo' id='promo' onchange="clearTimeout(i);i=setTimeout('checkPromo()',1000);"/></td></tr>
-	<tr><td colspan='2' id='promostatus'></td></tr>
-	<?php } ?>
 	<tr>
 		<td><!-- (c) 2005, 2013. Authorize.Net is a registered trademark of CyberSource Corporation --> <div class="AuthorizeNetSeal"> <script type="text/javascript" language="javascript">var ANS_customer_id="f86f50cf-83f8-48c5-9cbb-839d0b4a008b";</script> <script type="text/javascript" language="javascript" src="//verify.authorize.net/anetseal/seal.js" ></script> <a href="http://www.authorize.net/" id="AuthorizeNetText" target="_blank">Merchant Services</a> </div></td>
 	</tr>

@@ -61,12 +61,7 @@ $(function() {
     	<div class="clear"></div>
     	<p class="caption">Your RainLeads Cobase vCard is a simple one page website where you can feature your business information and a custom form of your choice to help you generate more leads! Set up takes only a few moments.</p>
     	<br/>
-    	<?php if($account->membership!="pro" && false){?>
-	    	<!-- If the account is not pro -->
-	    	<div class="message"><span>Your Cobase vCard will not become available to the public without a pro subscription.</span> <a class="button green_button" style="width:120px; margin:auto;" href="#">Upgrade Now</a></div>
-	    	<br/>
-	    <?php }else{
-	    	if(!intval(mysql_num_rows($forms))){?>
+	    	<?php if(!intval(mysql_num_rows($forms))){?>
 		    	<!-- If the account has no forms -->
 		    	<div class="message"><span>Before you generate your Cobase vCard</span> <a class="button blue_button" style="width:120px; margin:auto;" href="<?= $HOME_URL ?>forms/">Create a Form</a></div>
 		    	<div class="clear"></div>
@@ -229,8 +224,7 @@ $(function() {
 			    	</form>
 			      	<div id='chart_div' style='height:400px;'></div>
 			   	</div>
-    		<?php }
-	    	} ?>
+    		<?php } ?>
     	</div>
     </div>
     <div class="clear"></div>

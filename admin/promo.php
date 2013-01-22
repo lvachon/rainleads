@@ -14,10 +14,13 @@ if(strlen($_POST['code'])){
 	$type = mysql_escape_string($_POST['type']);
 	$amount = intval($_POST['amount']);
 	mysql_query("INSERT INTO promo(code,description,`type`,amount) VALUES('$code','$desc','$type',$amount)",$con);
-	header("Location: promo.php");
+	echo mysql_error();
+	var_dump($con);
+	//header("Location: promo.php");
 	die();
 }
-$pr = mysql_query("SELECT *,(SELECT count(*) from accounts where getData('promoUsed',data)=code) as uses from promo",$con);
+$pr = mysql_query("SELECT *,(SELECT count(*) from accounts where  getData('promoUsed',data) COLLATE utf8_general_ci =code) as uses from promo",$con);
+echo mysql_error();
 ?>
 	
 </head>

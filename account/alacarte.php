@@ -4,15 +4,8 @@ loginRequired();
 accountRequired();
 $account = new Account(verAccount());
 if($account->user_id!=$viewer->id){errorMsg("Only the account owner can change that setting");die();}
-if(intval($account->data['promoEnds'])>time()){
-	errorMsg("A-la-carte additions are not available during free/promotional billing periods.  Your account's promotional period ends: ".date("M j, Y",$account->data['promoEnds']));
-	die();
-}
-if($account->membership=="free" || $account->membership=="lite"){
-	errorMsg("Your account type is not able to add a la carte items, please <a href='{$HOME_URL}account/upgrage.php'>upgrade</a> your account to Basic or Pro.");
-	die();
-}
-$things = array(array("name"=>"+100MB storage","price"=>5,"tx"=>"storage"),array("name"=>"+1 User account","price"=>5,"tx"=>"user"));
+
+$things = array(array("name"=>"+100MB storage","price"=>5,"tx"=>"storage"),array("name"=>"+1 User account","price"=>12,"tx"=>"user"));
 ?>
 <html>
 <?php include('../inc/head.php'); ?>
@@ -29,46 +22,7 @@ $things = array(array("name"=>"+100MB storage","price"=>5,"tx"=>"storage"),array
 		<?php include('../inc/sidenav.php') ?>
 	</div>
 	<div id="main" class="left">
-		<div id='current_account'>
-			<h2 class="left">Account Information</h2>
-			<hr class="title_line" />
-			
-			<div class="plan-<?= $account->membership ?> membership-plan">
-				<center>
-					<div class="small">Account Type:</div>
-					<img src="../img/plan-<?= $account->membership ?>.png" ?>
-				</center>
-				Rain Leads<br/><span class="strong big"><?= ucwords($account->membership) ?></span>
-			</div>
-			<table class="membership-details">
-				<tr>
-					<td><span class="strong">Plan: </span></td>
-					<td>Rain Leads <?= ucwords($account->membership) ?></td>
-				</tr>
-				<tr>
-					<td><span class="strong">Expires: </span></td>
-					<td><?= ucwords($account->expiration) ?></td>
-				</tr>
-				<tr>
-					<td><span class="strong">Storage:</span></td>
-					<td><?=floor($account->storageUsed()/10485.76)/100;?>/<?=floor($account->storageLimit()/10485.76)/100;?>MB</td>
-				</tr>
-				<tr>
-					<td><span class="strong">Forms:</span></td>
-					<td><?php 	
-							$con = conDB();
-							$r = mysql_query("SELECT count(*) from forms where account_id={$account->id} and deleted=0",$con);
-							$cnt = mysql_fetch_array($r);
-							echo intval($cnt[0]);
-						?>/<?php $f=intval($account->plandata['forms']);if($f<100){echo $f;}else{echo "Unlimited";}?>
-					</td>
-				</tr>
-				<tr>
-					<td><span class="strong">Users:</span></td>
-					<td><?=count($account->members)-1;?>/<?=$account->userLimit();?></td>
-				</tr>
-			</table>
-		</div>
+		
 		<div id='chooseclass'>
 			<h2>Current Items</h2>
 			<hr class='title_line'/>
@@ -76,7 +30,7 @@ $things = array(array("name"=>"+100MB storage","price"=>5,"tx"=>"storage"),array
 				<input type='hidden' name='thing'id='thing' value='0'/>
 				<input type='hidden' name='delta' id='delta' value='0'/>
 				<table width='100%'>
-					<tr><th>Item</th><th>Cost</th><th>Actions</th></tr>
+					<tr><th>Item</th><th>Cost</th><th></th></tr>
 					<?php 
 						$r = mysql_query("SELECT count(*) from transactions where type='add_storage' and account_id={$account->id}",$con);
 						$add = mysql_fetch_array($r);
@@ -89,7 +43,7 @@ $things = array(array("name"=>"+100MB storage","price"=>5,"tx"=>"storage"),array
 						?>
 							<tr>
 								<td>Storage (100MB)</td>
-								<td>$<?=$things[0]['price'];?>.00</td>
+								<td>$<?=$things[0]['price'];?>.00/mo</td>
 								<td>
 									<input type='button' value='Remove' onclick='if(confirm("Do you really want to remove this from your subscription?")){$("#delta").val("-1");$("#thing").val("0");$("#buyform")[0].submit();}'/>
 								</td>
@@ -97,13 +51,13 @@ $things = array(array("name"=>"+100MB storage","price"=>5,"tx"=>"storage"),array
 						<?php } ?>
 							<tr>
 								<td>Storage (+100MB)</td>
-								<td>$<?=$things[0]['price'];?>.00</td>
+								<td>$<?=$things[0]['price'];?>.00/mo</td>
 								<td>
-									<input type='button' value='Subscribe' onclick='if(confirm("Do you really want to add this to your subscription?")){$("#delta").val("1");$("#thing").val("0");$("#buyform")[0].submit();}'/>
+									<input type='button' value='Add' onclick='if(confirm("Do you really want to add this to your subscription?")){$("#delta").val("1");$("#thing").val("0");$("#buyform")[0].submit();}'/>
 								</td>
 							</tr>
 						<?php
-						$r = mysql_query("SELECT count(*) from transactions where type='add_user' and account_id={$account->id}",$con);
+						$r = mysql_query("SELECT count(*) from transactions where (type='add_user') and account_id={$account->id}",$con);
 						$add = mysql_fetch_array($r);
 						$add = intval($add[0]);
 						$r = mysql_query("SELECT count(*) from transactions where type='rem_user' and account_id={$account->id}",$con);
@@ -114,23 +68,31 @@ $things = array(array("name"=>"+100MB storage","price"=>5,"tx"=>"storage"),array
 							?>
 							<tr>
 								<td>Additional User</td>
-								<td>$<?=$things[1]['price'];?>.00</td>
+								<td>$<?=$things[1]['price'];?>.00/mo</td>
 								<td>
 									<input type='button' value='Remove' onclick='if(confirm("Do you really want to remove this from your subscription?")){$("#delta").val("-1");$("#thing").val("1");$("#buyform")[0].submit();}'/>
 								</td>
 							</tr>
-						<?php } ?>
+						<?php }
+						 if($account->membership=="paid"){
+							$r = mysql_query("SELECT * from transactions where account_id={$account->id} and type='sub_create'",$con);
+							$autx = mysql_fetch_array($r);?>
 							<tr>
-								<td>Add another user</td>
-								<td>$<?=$things[1]['price'];?>.00</td>
-								<td>
-									<input type='button' value='Subscribe' onclick='if(confirm("Do you really want to add this to your subscription?")){$("#delta").val("1");$("#thing").val("1");$("#buyform")[0].submit();}'/>
-								</td>
+								<td>Admin User</td>
+								<td>$<?=$autx['amount'];?>.00/mo</td>
+								<td>&nbsp;</td>
 							</tr>
-						<?php
-					?>
+						<?php } ?>
+						<tr>
+							<td>Add <?php if($account->membership!="paid"){echo "first";}else{echo "another";}?> user</td>
+							<td>$<?=$things[1]['price'];?>.00/mo <?php if($account->membership=="paid"){?>x <input type='text' id='qtyu' value='1'/><?php } ?></td>
+							<td>
+								<input type='button' value='Add' <?php if($account->membership=="paid"){?>onclick='if(confirm("Do you really want to add this to your subscription?")){$("#delta").val($("#qtyu").val());$("#thing").val("1");$("#buyform")[0].submit();}'<?php }else{ ?> onclick='$("#delta").val("1");$("#thing").val("1");$("#buyform")[0].submit();'<?php }?>/>
+							</td>
+						</tr>
 				</table>
 			</form>
+			<span id='disclaimer'>Changes to your account will happen immediately, changes to your billing will occur on the next billing date.</span>
 		</div>
 	 </div>
 	<div class="clear"></div>

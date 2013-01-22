@@ -110,8 +110,8 @@ if(intval($id)){
 	$leadInfo = "Lead ID: {$did}<br />\n	Lead Name: {$name}<br />\n	Lead Email: {$email}<br />\n	Lead Received: ".date('n/j/Y',time());
 	$mailVariables = array('%homeurl','%sitename','%receiver','%url','%post');
 	$HOME = str_replace('www.',$account->subdomain.".",$HOME_URL);
-	if(!strpos($_SERVER['HTTP_REFERER'],'rainleads.com')){
-		if($account->data['notify_members'] != '0'){
+	if(!verCookie()){//If it's not from someone logged in
+		if($account->data['notify_members'] != '0'){//If notifications are enabled
 			foreach($account->members as $um){
 				$uu = new User($um);
 				$mailValues = array($HOME_URL,$SITE_NAME,$uu->name(),$HOME."leads/lead.php?id=".$id,$leadInfo);
@@ -129,6 +129,6 @@ if(intval($id)){
 	}
 	
 	saveAction('lead',$account->user_id,$id,'',$account->id,$id);
-	if(verCookie() && strpos($_SERVER['HTTP_REFERER'],'rainleads.com/leads')!==false){header("Location: {$HOME_URL}leads/");die();}
+	if(verCookie() && strpos($_SERVER['HTTP_REFERER'],'rainleads.com/leads')!==false){header("Location: {$HOME_URL}leads/");die();}//If you just manually entered this, go to the leads page instead of thanking the user
 }
 else{echo mysql_error();}

@@ -1,7 +1,6 @@
 <?php include '../inc/trois.php';
 loginRequired();
 $acct = new Account(verAccount());
-if($acct->membership=="lite"){errorMsg("Export codes are disabled for your account. <a href='/account/upgrade.php'>Upgrade</a> your account.");die();}
 $f = new Form($_GET['id']);
 if($f->account_id!=$acct->id){die("This form does not belong to the current account {$f->account_id}=={$acct->id}");}
 ?>

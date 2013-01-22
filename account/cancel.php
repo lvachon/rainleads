@@ -122,7 +122,7 @@ $AUTHNET_API_TX_KEY="6WM9t39tQ9R9Us9Y";
 							$r = mysql_query("SELECT count(*) from forms where account_id={$account->id} and deleted=0",$con);
 							$cnt = mysql_fetch_array($r);
 							echo intval($cnt[0]);
-						?>/<?php $f=intval($account->plandata['forms']);if($f<100){echo $f;}else{echo "Unlimited";}?>
+						?>/Unlimited
 					</td>
 				</tr>
 				<tr>

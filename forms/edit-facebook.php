@@ -103,11 +103,9 @@ $count = mysql_num_rows($get);
 			<?php }else{?>
 				<h3>Link Your Facebook and RainLeads Accounts!</h3>
 				<?php
-				if($account->membership=="free" || $account->membership=="lite"){
-					$x = "document.location.href='/account/upgrade.php';";
-				}else{
+				
 					$x="login();";
-				}
+				//removed membership type check, that's why this is built so damn weird.
 				?>
 				<center>
 					<div onClick="<?=$x;?>" class="button_outside_border_blue">

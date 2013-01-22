@@ -29,12 +29,14 @@
 
 // NETWORK BASIC CONFIG
 $SITE_NAME = "RainLeads";
-$HOME_URL  = "https://www.rainleads.com/";
-$DOMAIN    = "rainleads.com";
-$HOME_DIR  = "/var/www/vhosts/mocircles.com/httpdocs";
+$HOME_URL  = "https://www.mcgrish.com/";
+$DOMAIN    = "mcgrish.com";
+$HOME_DIR  = "/var/www/vhosts/mcgrish.com/httpdocs";
 $SITE_CONTACT = "info@rainleads.com";//"admin@{$DOMAIN}";//this is used for send feedback.php
 $PER_PAGE = 20;//this is used for the wall autoscroll
 $LOGGED_OUT_PAGES = array('/why.php','/why2.php','/plans.php','/index2.php','/lead-management.php','/index.php','/virtual-business-cards.php','/about.php','/faq.php','/terms.php','/privacy.php','/enterprise.php','/contact.php','/customForms.php','/signup.php','/contact-form-builder.php','/facebook-forms.php','/error.php','/tour.php'); 
+
+
 
 
 if(strlen($_COOKIE['subdomain'])){
@@ -45,7 +47,7 @@ if(strlen($_COOKIE['subdomain'])){
 $DB_HOST  = "localhost";
 $DB_USER  = "rl";
 $DB_PASS  = "rldbpass";
-$DB_DB    = "new_rainleads";
+$DB_DB    = "dev_rainleads";
 
 // FACEBOOK CONNECT CONFIG
 $FB_APPID   = "138120169561544";
@@ -75,7 +77,7 @@ class User
 	public $id=0;
 	public $email = "";
 	public $datestamp = "";
-	public $data = array('fname'=>'Nobody','lname'=>'Anonymous','username'=>'nobody');
+	public $data = array('fname'=>'Nobody','lname'=>'','username'=>'nobody');
 	
 	
 	function __construct($id=0){

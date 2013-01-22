@@ -146,12 +146,8 @@ $account = $viewer->getAccount();
                     <input type="hidden" id="daychosen" name="daychosen" value="<?=$day?>" />
                     <div class="right">
                     	<div class="left" id="assfilter"></div>
-                    	<?php if($viewer->getAccount()->membership=="basic" || $viewer->getAccount()->membership=="pro" || $viewer->getAccount()->membership=="free"){?>
-	                        <a href="javascript:void(0);" onclick="$.post('request.php',function(data){$.fancybox(data);});" class="button blue_button left" style="padding: 8px 14px; margin-right:5px;">Export Calendar</a>        
-	                        <a href="javascript:void(0);" onclick="$.post('upload-pop.php',function(data){$.fancybox(data);});" class="button blue_button left" style="padding: 8px 14px;">Create Event</a>
-	                    <?php }else{ ?> 
-	                    	<div class="right">Your account is unable to create or export events.  Please <?php if($viewer->id == $account->user_id){?><a href="../account/upgrade.php"><?php } ?>upgrade<?php if($viewer->id == $account->user_id){?></a><?php } ?> your account.</div>
-	                    <?php } ?>
+                        <a href="javascript:void(0);" onclick="$.post('request.php',function(data){$.fancybox(data);});" class="button blue_button left" style="padding: 8px 14px; margin-right:5px;">Export Calendar</a>        
+                        <a href="javascript:void(0);" onclick="$.post('upload-pop.php',function(data){$.fancybox(data);});" class="button blue_button left" style="padding: 8px 14px;">Create Event</a>
                     </div>
                     <div class="clear"></div>
                 </div>        

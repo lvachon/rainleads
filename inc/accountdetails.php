@@ -42,7 +42,7 @@
 			<div class="clear"></div>
 		</td>
     </tr>
-    <tr>
+    <!--<tr>
 		
 		<td style="line-height:16px;">
 		<span class="strong">Forms:</span><br/>
@@ -53,7 +53,7 @@
 			<?php } ?>
 		<div class="clear"></div>
 		</td>
-    </tr>
+  </tr>-->
     <?php if($account->membership=="free"){?>
     <tr>
 		

@@ -174,10 +174,10 @@ $(function() {
            	
             if(intval($acct->data['see_all_leads']) || in_array($viewer->id,$acct->admins)){
             	$qry = "form_results where length(name)>0 and length(email)>0 and form_id IN (SELECT id from forms where account_id={$acct->id}) {$fcon} {$filter} {$assfilter} {$qfilter} {$delcon} {$pipecon}";
-            	$res = mysql_query("SELECT *,(SELECT user_id from assignments where result_id=form_results.id) as assigned_user,(SELECT title from statuses where id=status) as statustext,(SELECT color from statuses where id=status) as statuscolor from $qry order by {$sort} LIMIT $offset,$per_page",$con);
+            	$res = mysql_query("SELECT *,(SELECT user_id from assignments where result_id=form_results.id and account_id={$acct->id}) as assigned_user,(SELECT title from statuses where id=status) as statustext,(SELECT color from statuses where id=status) as statuscolor from $qry order by {$sort} LIMIT $offset,$per_page",$con);
             }else{
             	$qry = "form_results where length(name)>0 and length(email)>0 and id IN (SELECT result_id from assignments where user_id={$viewer->id} and account_id={$acct->id}) {$fcon} {$filter} {$qfilter} {$delcon} {$pipecon}";
-            	$res = mysql_query("SELECT *,(SELECT user_id from assignments where result_id=form_results.id) as assigned_user,(SELECT title from statuses where id=status) as statustext,(SELECT color from statuses where id=status) as statuscolor from $qry order by {$sort} LIMIT $offset,$per_page",$con);
+            	$res = mysql_query("SELECT *,(SELECT user_id from assignments where result_id=form_results.id and account_id={$acct->id}) as assigned_user,(SELECT title from statuses where id=status) as statustext,(SELECT color from statuses where id=status) as statuscolor from $qry order by {$sort} LIMIT $offset,$per_page",$con);
             }
             
             $pgl = pageLinks($qry,$page,$per_page,"index.php?sort={$_GET['sort']}&filter={$_GET['filter']}&form_id={$_GET['form_id']}&delcon={$_GET['delcon']}&pipe={$_GET['pipe']}&q={$_GET['q']}&ass={$_GET['ass']}");

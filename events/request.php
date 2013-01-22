@@ -1,6 +1,5 @@
 <?php include '../inc/trois.php';
 loginRequired();
-if($viewer->getAccount()->membership!="basic" && $viewer->getAccount()->membership!="pro" && $viewer->getAccount()->membership!="free"){die("Your account is unable to create or export events.  Please <a href='/account/upgrade.php'>upgrade</a> your account.");} 
 $con = conDB();
 $datestamp = time();
 $makeRequest = mysql_query("INSERT INTO requests(user_id,account_id,datestamp) VALUES({$viewer->id},{$viewer->getAccount()->id},$datestamp)",$con) or die(mysql_error());

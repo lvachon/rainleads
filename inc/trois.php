@@ -373,7 +373,7 @@ function accountAdminOnly(){
 
 if(verAccount()){
 	$account = new Account(verAccount());
-	if($account->membership=="free" && $account->expiration<time() && !in_array($_SERVER['SCRIPT_NAME'],array("/account/upgrade.php","/error.php","/account/pay.php","/login.php"))){
+	if($account->membership=="free" && $account->expiration<time() && !in_array($_SERVER['SCRIPT_NAME'],array("/account/alacarte.php","/account/upgrade.php","/account/alacarte.php","/error.php","/account/pay.php","/login.php"))){
 		errorMsg("You free trial has expired. Please <a href='{$HOME_URL}account/upgrade.php'>upgrade</a> to a paid account.");
 		die();
 	}
